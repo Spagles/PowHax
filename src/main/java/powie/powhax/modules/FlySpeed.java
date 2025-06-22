@@ -1,8 +1,10 @@
 package powie.powhax.modules;
 
-import powie.powhax.Powhax;
-import meteordevelopment.meteorclient.settings.*;
+import meteordevelopment.meteorclient.settings.DoubleSetting;
+import meteordevelopment.meteorclient.settings.Setting;
+import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import powie.powhax.Powhax;
 
 public class FlySpeed extends Module {
     private final SettingGroup sgGeneral = this.settings.getDefaultGroup();
@@ -18,7 +20,7 @@ public class FlySpeed extends Module {
         .description("how fast u wanna go?")
         .defaultValue(0.250)
         .max(10)
-        .min(0.0)
+        .min(0)
         .build()
     );
 

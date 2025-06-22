@@ -6,7 +6,6 @@ import com.mojang.logging.LogUtils;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.commands.Commands;
-import meteordevelopment.meteorclient.systems.hud.Hud;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
@@ -28,7 +27,7 @@ public class Powhax extends MeteorAddon {
         Modules.get().add(new AutoSell());
         Modules.get().add(new BedrockPrinter());
         Modules.get().add(new BlazeFarm());
-        Modules.get().add(new deathCommands());
+        Modules.get().add(new DeathCommands());
         Modules.get().add(new DimensionGodMode());
         Modules.get().add(new FlySpeed());
         Modules.get().add(new SmiteAura());
@@ -37,6 +36,7 @@ public class Powhax extends MeteorAddon {
         // Commands.add(new CommandExample());
         Commands.add(new ClearChat());
         Commands.add(new Coords());
+        Commands.add(new Xp());
 
         // HUD
         // Hud.get().register(HudExample.INFO);

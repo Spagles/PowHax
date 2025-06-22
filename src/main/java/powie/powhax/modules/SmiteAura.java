@@ -1,13 +1,11 @@
 package powie.powhax.modules;
 
-import powie.powhax.Powhax;
-
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.mixininterface.IVec3d;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.mixininterface.IVec3d;
 import meteordevelopment.meteorclient.utils.entity.EntityUtils;
 import meteordevelopment.meteorclient.utils.entity.SortPriority;
 import meteordevelopment.meteorclient.utils.entity.Target;
@@ -17,7 +15,6 @@ import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 import meteordevelopment.orbit.EventHandler;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -29,10 +26,11 @@ import net.minecraft.entity.passive.WolfEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.Box;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.RaycastContext;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.GameMode;
+import net.minecraft.world.RaycastContext;
+import powie.powhax.Powhax;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +54,7 @@ public class SmiteAura extends Module {
     private final Setting<SmiteAura.Command> command = sgGeneral.add(new EnumSetting.Builder<SmiteAura.Command>()
         .name("command")
         .description("what command to use for smiting")
-        .defaultValue(SmiteAura.Command.thor)
+        .defaultValue(Command.thor)
         .build()
     );
 
@@ -70,17 +68,43 @@ public class SmiteAura extends Module {
 
     private final Setting<Boolean> pauseOnLag = sgGeneral.add(new BoolSetting.Builder()
         .name("pause-on-lag")
-        .description("Pauses if the server is lagging.")
+        .description("Does not smite if the server is lagging.")
         .defaultValue(true)
         .build()
     );
 
     private final Setting<Boolean> pauseOnUse = sgGeneral.add(new BoolSetting.Builder()
         .name("pause-on-use")
-        .description("Does not attack while using an item.")
+        .description("Does not smite while using an item.")
         .defaultValue(false)
         .build()
     );
+
+    private final Setting<Boolean> pauseOnBreakingBlock = sgGeneral.add(new BoolSetting.Builder()
+            .name("pause-on-breaking-block")
+            .description("Does not smite while breaking a block.")
+            .defaultValue(false)
+            .build()
+    );
+
+//    private final Setting<Boolean> pauseOnMove = sgGeneral.add(new BoolSetting.Builder()
+//        .name("pause-on-move")
+//        .description("Does not smite while moving.")
+//        .defaultValue(false)
+//        .build()
+//    );
+//
+//    private final Setting<Double> pauseOnMoveSpeedThreshold = sgGeneral.add(new DoubleSetting.Builder()
+//        .name("pause-on-move-speed-threshold")
+//        .description("If the value is higher than the player's speed, it will not smite.")
+//        .defaultValue(2)
+//        .min(0)
+//        .sliderMin(0)
+//        .sliderMax(40)
+//        .max(40)
+//        .visible(pauseOnMove::get)
+//        .build()
+//    );
 
     // Targeting
 
@@ -160,7 +184,9 @@ public class SmiteAura extends Module {
             return;
         }
         if (!mc.player.isAlive() || PlayerUtils.getGameMode() == GameMode.SPECTATOR) return;
-        if (pauseOnUse.get() && (mc.interactionManager.isBreakingBlock() || mc.player.isUsingItem())) return;
+        if (pauseOnUse.get() && mc.player.isUsingItem()) return;
+        if (pauseOnBreakingBlock.get() && mc.interactionManager.isBreakingBlock()) return;
+//        if (pauseOnMove.get() && mc.player.speed >= pauseOnMoveSpeedThreshold.get()) return;
         if (TickRate.INSTANCE.getTimeSinceLastTick() >= 1f && pauseOnLag.get()) return;
 
         targets.clear();
@@ -208,8 +234,9 @@ public class SmiteAura extends Module {
         )) return false;
 
         if (!entities.get().contains(entity.getType())) return false;
-        if (ignoreNamed.get() && entity.hasCustomName()) return false;
         if (!canSeeEntityFeet(entity)) return false;
+        if (ignoreNamed.get() && entity.hasCustomName()) return false;
+        if (!entity.isOnGround()) return false;
         if (ignoreTamed.get()) {
             if (entity instanceof Tameable tameable
                     && tameable.getOwner() != null
@@ -257,13 +284,13 @@ public class SmiteAura extends Module {
         return null;
     }
 
-    public enum EntityAge {
+    private enum EntityAge {
         Baby,
         Adult,
         Both
     }
 
-    public enum Command {
+    private enum Command {
         lightning, shock, smite, strike, thor, custom
     }
 }

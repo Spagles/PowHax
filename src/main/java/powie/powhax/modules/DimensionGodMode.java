@@ -1,7 +1,5 @@
 package powie.powhax.modules;
 
-import meteordevelopment.meteorclient.settings.SettingGroup;
-import powie.powhax.Powhax;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
@@ -9,6 +7,7 @@ import meteordevelopment.meteorclient.gui.widgets.containers.WVerticalList;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.network.packet.c2s.play.TeleportConfirmC2SPacket;
+import powie.powhax.Powhax;
 
 import java.util.ArrayList;
 import java.util.List;

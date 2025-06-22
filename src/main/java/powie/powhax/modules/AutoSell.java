@@ -1,15 +1,15 @@
 package powie.powhax.modules;
 
-import meteordevelopment.meteorclient.settings.StringSetting;
-import powie.powhax.Powhax;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.IntSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.screen.slot.SlotActionType;
+import powie.powhax.Powhax;
 
 public class AutoSell extends Module {
     private final SettingGroup sgGeneral = this.settings.getDefaultGroup();

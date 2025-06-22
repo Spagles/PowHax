@@ -1,25 +1,21 @@
 package powie.powhax.modules;
 
-import powie.powhax.Powhax;
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.gui.utils.StarscriptTextBoxRenderer;
+import meteordevelopment.meteorclient.settings.*;
+import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.misc.MeteorStarscript;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
-import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.events.packets.PacketEvent;
-import meteordevelopment.meteorclient.settings.BoolSetting;
-import meteordevelopment.meteorclient.settings.IntSetting;
-import meteordevelopment.meteorclient.settings.StringListSetting;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.gui.utils.StarscriptTextBoxRenderer;
 import meteordevelopment.orbit.EventHandler;
+import powie.powhax.Powhax;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class deathCommands extends Module {
+public class DeathCommands extends Module {
     private final SettingGroup sgGeneral = this.settings.getDefaultGroup();
 
     private final Setting<Boolean> SupportStarscript = sgGeneral.add(new BoolSetting.Builder()
@@ -77,7 +73,7 @@ public class deathCommands extends Module {
         .build()
     );
 
-    public deathCommands() {
+    public DeathCommands() {
         super(Powhax.CATEGORY, "death-commands", "Run commands when you die.");
     }
 

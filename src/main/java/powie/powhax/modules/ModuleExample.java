@@ -1,6 +1,5 @@
 package powie.powhax.modules;
 
-import powie.powhax.Powhax;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.renderer.ShapeMode;
 import meteordevelopment.meteorclient.settings.ColorSetting;
@@ -13,7 +12,7 @@ import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
-
+import powie.powhax.Powhax;
 
 public class ModuleExample extends Module {
     private final SettingGroup sgGeneral = this.settings.getDefaultGroup();

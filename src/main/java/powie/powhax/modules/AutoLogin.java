@@ -1,13 +1,12 @@
 package powie.powhax.modules;
 
-import powie.powhax.Powhax;
-import meteordevelopment.meteorclient.events.game.GameJoinedEvent;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
+import powie.powhax.Powhax;
 
 public class AutoLogin extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
@@ -33,7 +32,7 @@ public class AutoLogin extends Module {
     }
 
     @EventHandler
-    private void onGameJoined(GameJoinedEvent event) {
+    private void onGameJoined() {
         ChatUtils.sendPlayerMsg(command.get() + " " + password.get());
     }
 

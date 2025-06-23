@@ -48,12 +48,17 @@ public class Powhax extends MeteorAddon {
     }
 
     @Override
-    public String getPackage() {
-        return "powie.powhax";
+    public String getWebsite() {
+        return "https://github.com/Powie69/PowHax";
     }
 
     @Override
     public GithubRepo getRepo() {
         return new GithubRepo("Powie69", "Powhax");
+    }
+
+    @Override
+    public String getPackage() {
+        return "powie.powhax";
     }
 }

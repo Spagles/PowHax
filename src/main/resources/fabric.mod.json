@@ -3,12 +3,15 @@
   "id": "powhax",
   "version": "${version}",
   "name": "PowHax",
-  "description": "client by Powie69",
+  "description": "meteor addon thats made for servers with plugins like mcmmo, essentialsX, and many other",
   "authors": [
     "Powie69"
   ],
   "contact": {
-    "repo": "https://github.com/Powie69/PowHax"
+    "homepage": "https://github.com/Powie69/PowHax",
+    "issues": "https://github.com/Powie69/PowHax/issues",
+    "repo": "https://github.com/Powie69/PowHax",
+    "source": "https://github.com/Powie69/PowHax"
   },
   "icon": "assets/template/icon.png",
   "environment": "client",
@@ -21,7 +24,16 @@
     "powhax.mixins.json"
   ],
   "custom": {
-    "meteor-client:color": "225,155,0"
+    "meteor-client:color": "225,155,0",
+    "modmenu": {
+      "issues": "https://github.com/Powie69/PowHax/issues",
+      "links": {
+        "modmenu.github_releases": "https://github.com/Powie69/PowHax/releases",
+        "modmenu.kofi": "Powie_"
+      },
+      "source": "https://github.com/Powie69/PowHax",
+      "website": "https://github.com/Powie69/PowHax"
+    }
   },
   "depends": {
     "java": ">=21",

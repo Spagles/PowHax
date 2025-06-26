@@ -33,13 +33,13 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 <div align="center">
 
 <a href="https://github.com/Powie69/PowHax/releases">
-        <img width="50%" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhF3jjLg6ZcMHViwfPKRj_BfMFkDCP59YrcpzZBM5XbGuZ2Q7RyDJfoMoC5S_ckBRX1g&usqp=CAU" alt="DOWNLOAD NOW!"/>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_GlNQ2QzowFoex_SuVlqpKPyYsXwN1oldZg&usqp=CAU" alt="DOWNLOAD NOW!" width="50%"/>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScPp03sqFuOjFnK47izCeppMQ7Z61vJq1EXA&usqp=CAU" alt="DOWNLOAD NOW!" width="50%"/>
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoaW7cYo8gjF2up_6C-bi-FJ_aIKbB0QKrtaqI-58w_MpIfeh5Ip5Su14R-6WjHLBmWe4&usqp=CAU" alt="DOWNLOAD NOW!" width="50%"/>
-        <img src="https://t4.ftcdn.net/jpg/06/00/79/51/360_F_600795160_dIBqMukBPbrf2CuZjt4CpbCvhKsdOPxj.jpg" alt="DOWNLOAD NOW!" width="50%"/>
-        <img src="https://cdn.pixabay.com/photo/2023/02/09/15/32/download-7779081_1280.png" alt="DOWNLOAD NOW!" width="50%"/>
-        <img src="https://static.vecteezy.com/system/resources/thumbnails/000/562/163/small/BUTTON-d-2.jpg" alt="DOWNLOAD NOW!" width="50%"/>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRhF3jjLg6ZcMHViwfPKRj_BfMFkDCP59YrcpzZBM5XbGuZ2Q7RyDJfoMoC5S_ckBRX1g&usqp=CAU" alt="DOWNLOAD NOW!" width="30%"/>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_GlNQ2QzowFoex_SuVlqpKPyYsXwN1oldZg&usqp=CAU" alt="DOWNLOAD NOW!" width="30%"/>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScPp03sqFuOjFnK47izCeppMQ7Z61vJq1EXA&usqp=CAU" alt="DOWNLOAD NOW!" width="30%"/>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoaW7cYo8gjF2up_6C-bi-FJ_aIKbB0QKrtaqI-58w_MpIfeh5Ip5Su14R-6WjHLBmWe4&usqp=CAU" alt="DOWNLOAD NOW!" width="30%"/>
+        <img src="https://t4.ftcdn.net/jpg/06/00/79/51/360_F_600795160_dIBqMukBPbrf2CuZjt4CpbCvhKsdOPxj.jpg" alt="DOWNLOAD NOW!" width="30%"/>
+        <img src="https://cdn.pixabay.com/photo/2023/02/09/15/32/download-7779081_1280.png" alt="DOWNLOAD NOW!" width="30%"/>
+        <img src="https://static.vecteezy.com/system/resources/thumbnails/000/562/163/small/BUTTON-d-2.jpg" alt="DOWNLOAD NOW!" width="30%"/>
 </a>
 
 </div>

@@ -25,7 +25,7 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 | `Coords`     | Gets your coordinates | `coords`, `position`, `pos` |
 | `Xp`         | Adds Xp client sided  | `xp`, `experience`          | 
 
-## download [1.21.5]
+## download [1.21.6]
 
 
 <h3 align="center"><a href="./Installation%20guide.md">Installation guide here</a></h3>

@@ -47,8 +47,6 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 
 These older versions are no longer supported. their crappy.
 
-### Versions
-
 | Version | Minecraft<br> version | Release<br>Page                                                                                                                                                 |
 |---------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | 1.6.3   | `1.21.7`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.3"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |

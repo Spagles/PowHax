@@ -25,10 +25,9 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 | `Coords`     | Gets your coordinates | `coords`, `position`, `pos` |
 | `Xp`         | Adds Xp client sided  | `xp`, `experience`          | 
 
-## download [1.21.6]
+## Download
 
-
-<h3 align="center"><a href="./Installation%20guide.md">Installation guide here</a></h3>
+<h3 align="center"><a href="./Installation%20guide.md">Click here for installation guide</a></h3>
 
 <div align="center">
 
@@ -44,9 +43,21 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 
 </div>
 
+### Older versions
+
+These older versions are no longer supported. their crappy.
+
+### Versions
+
+| Version | Minecraft<br> version | Release<br>Page                                                                                                                                                 |
+|---------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1.6.3   | `1.21.7`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.3"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
+| 1.6.2   | `1.21.6`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.2"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
+| 1.6.0   | `1.21.5`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.0"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
+
+<sub>*There are more older versions, but I only figured out how semantic versioning works after 1.6.0*</sub>
 
 ### build
-
 
 If you don't trust the very many download buttons. You can compile the addon yourself.
 [Here is tutorial on how to compile Minecraft mods.](https://youtu.be/5dEgxdLUQoI)

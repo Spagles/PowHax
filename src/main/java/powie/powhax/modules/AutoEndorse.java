@@ -22,8 +22,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket;
 import powie.powhax.Powhax;
 
-import java.util.Arrays;
-
 public class AutoEndorse extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final SettingGroup sgFront = settings.createGroup("Front");

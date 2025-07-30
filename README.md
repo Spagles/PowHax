@@ -45,7 +45,7 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 
 ### Older versions
 
-These older versions are no longer supported. their crappy.
+These older versions are no longer supported. There're crappy.
 
 | Version | Minecraft<br> version | Release<br>Page                                                                                                                                                 |
 |---------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|

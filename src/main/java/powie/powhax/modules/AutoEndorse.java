@@ -24,7 +24,7 @@ import powie.powhax.Powhax;
 
 public class AutoEndorse extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-    private final SettingGroup sgFront = settings.createGroup("Front");
+    private final SettingGroup sgFront = settings.createGroup("Text");
 
     private final Setting<Target> targets = sgGeneral.add(new EnumSetting.Builder<Target>()
         .name("targets")
@@ -54,21 +54,21 @@ public class AutoEndorse extends Module {
     private final Setting<String> firstLine = sgFront.add(new StringSetting.Builder()
         .name("first-line-front")
         .description("The first line of the sign")
-        .defaultValue("I Love using Powhax")
+        .defaultValue("I Love using")
         .build()
     );
 
     private final Setting<String> secondLine = sgFront.add(new StringSetting.Builder()
         .name("second-line-front")
         .description("The second line of the sign")
-        .defaultValue("Powhax is the")
+        .defaultValue("Powhax it's")
         .build()
     );
 
     private final Setting<String> thirdLine = sgFront.add(new StringSetting.Builder()
         .name("third-line-front")
-        .description("best")
-        .defaultValue("Powhax <3")
+        .description("The third line of the sign")
+        .defaultValue("the best")
         .build()
     );
 
@@ -125,7 +125,6 @@ public class AutoEndorse extends Module {
                 }
             }
             if (allEmptyAfter) {
-                info(i + " is empty");
                 lines[i] = "-" + getTarget(targetRange.get(), targetPriority.get()).getName().getString();
                 break;
             }

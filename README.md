@@ -8,14 +8,14 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 
 | Module Name     | Description                                                                                                            | For                                                                                               |
 |-----------------|------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| Anti-Vansish    | Notifies you when a admin uses `/vanish`.                                                                              | [essentialsX](https://essentialsx.net)                                                            |
 | Armor-buster    | Tries to break a player's armor with [armor impact ability.](https://mcmmo.fandom.com/wiki/Axes_(Combat)#Armor_Impact) | [mcmmo](https://mcmmo.org/#home)                                                                  |
+| Auto-Endorse    | Places a sign with specified text. The last line will contain the name of the player nearest to you.                   |                                                                                                   |
 | Auto-Login      | Runs `/login` command when you join a server. very basic implementation.                                               | any auth plugin                                                                                   |
 | Auto-Sell       | Automatically sells a stack in Tradeview.                                                                              | [Dynamic Shop](https://www.spigotmc.org/resources/discontinued-dynamicshop-3-1-16-5-1-21.65603)   |
 | Bedrock-Printer | Writes the position of bedrock in the nether in a file. meant for seed cracking.                                       | [Nether Bedrock Cracker](https://github.com/19MisterX98/Nether_Bedrock_Cracker)                   |
+| Death-Commands  | Run commands when you respawn. supports [StarScript](https://meteorclient.com/faq/starscript).                         |                                                                                                   |
 | Fly-Speed       | Modifies your fly speed.                                                                                               | Anythint that gives you the flight abilities like[`/fly` in essentialsX](https://essentialsx.net) |
 | Smite-aura      | Automatically strikes lighting on specified entities around you.                                                       | [`/lighting` in essentialsX](https://essentialsx.net/)                                            |
-| Death-Commands  | Run commands when you respawn. supports [StarScript](https://meteorclient.com/faq/starscript).                         |                                                                                                   |
 
 ## Commands
 

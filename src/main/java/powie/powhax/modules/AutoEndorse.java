@@ -113,22 +113,16 @@ public class AutoEndorse extends Module {
     private String[] composeLines() {
         String[] lines = {firstLine.get(), secondLine.get(), thirdLine.get(), ""};
 
-        // Find first empty line with no non-empty content after it
-        for (int i = 0; i < lines.length; i++) {
-            if (!lines[i].trim().isEmpty()) continue;
-            // Check if all remaining lines are empty
-            boolean allEmptyAfter = true;
-            for (int j = i + 1; j < lines.length; j++) {
-                if (!lines[j].trim().isEmpty()) {
-                    allEmptyAfter = false;
-                    break;
-                }
-            }
-            if (allEmptyAfter) {
+        for (int i = 3; i >= 0; i--) {
+            if (i == 0) {
+                lines[i] = "-" + getTarget(targetRange.get(), targetPriority.get()).getName().getString();
+                break;
+            };
+
+            if (!lines[i - 1].isEmpty()) {
                 lines[i] = "-" + getTarget(targetRange.get(), targetPriority.get()).getName().getString();
                 break;
             }
-
         }
 
         return lines;

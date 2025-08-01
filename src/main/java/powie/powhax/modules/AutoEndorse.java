@@ -88,15 +88,15 @@ public class AutoEndorse extends Module {
         if (mc.player == null || mc.world == null) return;
         if(!(event.screen instanceof SignEditScreen) && !(event.screen instanceof HangingSignEditScreen)) return;
 
-        SignBlockEntity sign = ((AbstractSignEditScreenAccessor) event.screen).meteor$getSign();
-
         Entity target = getTarget(targetRange.get(), targetPriority.get());
         if (target == null) {
             warning("no target found");
             return;
         }
 
-        String[] lines = composeLines();
+        SignBlockEntity sign = ((AbstractSignEditScreenAccessor) event.screen).meteor$getSign();
+
+        String[] lines = composeLines(target.getName().getString());
 
         mc.player.networkHandler.sendPacket(new UpdateSignC2SPacket(
                 sign.getPos(),
@@ -110,17 +110,17 @@ public class AutoEndorse extends Module {
         event.cancel();
     }
 
-    private String[] composeLines() {
+    private String[] composeLines(String name) {
         String[] lines = {firstLine.get(), secondLine.get(), thirdLine.get(), ""};
 
         for (int i = 3; i >= 0; i--) {
             if (i == 0) {
-                lines[i] = "-" + getTarget(targetRange.get(), targetPriority.get()).getName().getString();
+                lines[i] = "-" + name;
                 break;
-            };
+            }
 
             if (!lines[i - 1].isEmpty()) {
-                lines[i] = "-" + getTarget(targetRange.get(), targetPriority.get()).getName().getString();
+                lines[i] = "-" + name;
                 break;
             }
         }

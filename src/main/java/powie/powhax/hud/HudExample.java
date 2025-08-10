@@ -1,10 +1,10 @@
 package powie.powhax.hud;
 
-import powie.powhax.Powhax;
 import meteordevelopment.meteorclient.systems.hud.HudElement;
 import meteordevelopment.meteorclient.systems.hud.HudElementInfo;
 import meteordevelopment.meteorclient.systems.hud.HudRenderer;
 import meteordevelopment.meteorclient.utils.render.color.Color;
+import powie.powhax.Powhax;
 
 public class HudExample extends HudElement {
     /**

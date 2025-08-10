@@ -1,20 +1,21 @@
 package powie.powhax;
 
-import meteordevelopment.meteorclient.MeteorClient;
-import net.fabricmc.loader.api.metadata.CustomValue;
-import powie.powhax.commands.*;
-import powie.powhax.modules.*;
 import com.mojang.logging.LogUtils;
+import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
+import net.fabricmc.loader.api.metadata.CustomValue;
 import org.slf4j.Logger;
+import powie.powhax.commands.ClearChat;
+import powie.powhax.commands.Coords;
+import powie.powhax.commands.Xp;
+import powie.powhax.modules.*;
 
 import static meteordevelopment.meteorclient.MeteorClient.MOD_META;
-import static net.fabricmc.loader.impl.FabricLoaderImpl.MOD_ID;
 
 public class Powhax extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();

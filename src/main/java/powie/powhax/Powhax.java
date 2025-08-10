@@ -1,5 +1,7 @@
 package powie.powhax;
 
+import meteordevelopment.meteorclient.MeteorClient;
+import net.fabricmc.loader.api.metadata.CustomValue;
 import powie.powhax.commands.*;
 import powie.powhax.modules.*;
 import com.mojang.logging.LogUtils;
@@ -10,6 +12,9 @@ import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import org.slf4j.Logger;
+
+import static meteordevelopment.meteorclient.MeteorClient.MOD_META;
+import static net.fabricmc.loader.impl.FabricLoaderImpl.MOD_ID;
 
 public class Powhax extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
@@ -55,11 +60,18 @@ public class Powhax extends MeteorAddon {
 
     @Override
     public GithubRepo getRepo() {
-        return new GithubRepo("Powie69", "Powhax");
+        return new GithubRepo("Powie69", "Powhax", "main", null);
     }
 
     @Override
     public String getPackage() {
         return "powie.powhax";
+    }
+
+    @Override
+    public String getCommit() {
+        CustomValue commit = MOD_META.getCustomValue(MeteorClient.MOD_ID + ":commit");
+        String commitStr = commit == null ? "" : commit.getAsString();
+        return commitStr.isEmpty() ? null : commitStr;
     }
 }

@@ -3,7 +3,7 @@
   "id": "powhax",
   "version": "${version}",
   "name": "PowHax",
-  "description": "meteor addon thats made for servers with plugins like mcmmo, essentialsX, and many other",
+  "description": "meteor addon that's made for servers with plugins like mcmmo, essentialsX, and many other",
   "authors": [
     "Powie69"
   ],

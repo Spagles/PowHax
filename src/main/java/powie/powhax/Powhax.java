@@ -27,7 +27,6 @@ public class Powhax extends MeteorAddon {
         LOG.info("Initializing PowHax");
 
         // Modules
-        // Modules.get().add(new ModuleExample());
         Modules.get().add(new ArmorBuster());
         Modules.get().add(new AutoEndorse());
         Modules.get().add(new AutoLogin());
@@ -40,13 +39,11 @@ public class Powhax extends MeteorAddon {
         Modules.get().add(new SmiteAura());
 
         // Commands
-        // Commands.add(new CommandExample());
         Commands.add(new ClearChat());
         Commands.add(new Coords());
         Commands.add(new Xp());
 
         // HUD
-        // Hud.get().register(HudExample.INFO);
     }
 
     @Override

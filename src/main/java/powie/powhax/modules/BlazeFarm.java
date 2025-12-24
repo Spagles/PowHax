@@ -172,7 +172,7 @@ public class BlazeFarm extends Module {
     }
 
     private boolean entityCheck(Entity entity) {
-        if (entity.equals(mc.player) || entity.equals(mc.cameraEntity)) return false;
+        if (entity.equals(mc.player) || entity.equals(mc.getCameraEntity())) return false;
         if ((entity instanceof LivingEntity livingEntity && livingEntity.isDead()) || !entity.isAlive()) return false;
 
         Box hitbox = entity.getBoundingBox();
@@ -183,8 +183,7 @@ public class BlazeFarm extends Module {
             range.get()
         )) return false;
         if (entity.getType() != EntityType.BLAZE) return false;
-        if (!PlayerUtils.canSeeEntity(entity) && !PlayerUtils.isWithin(entity, wallsRange.get())) return false;
-        return true;
+        return PlayerUtils.canSeeEntity(entity) || PlayerUtils.isWithin(entity, wallsRange.get());
     }
 
     private boolean delayCheck() {

@@ -16,6 +16,7 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 | Death-Commands  | Run commands when you respawn. supports [StarScript](https://meteorclient.com/faq/starscript).                         |                                                                                                   |
 | Fly-Speed       | Modifies your fly speed.                                                                                               | Anythint that gives you the flight abilities like[`/fly` in essentialsX](https://essentialsx.net) |
 | Smite-aura      | Automatically strikes lighting on specified entities around you.                                                       | [`/lighting` in essentialsX](https://essentialsx.net/)                                            |
+| Trajectories+   | Select which fired entities to track                                                                                   |                                                                                                   |
 
 ## Commands
 
@@ -43,7 +44,8 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 
 </div>
 
-### Older versions
+<details>
+<summary><h3 style="display: inline">Old versions</h3></summary>
 
 These older versions are no longer supported. There're crappy.
 
@@ -55,6 +57,7 @@ These older versions are no longer supported. There're crappy.
 | 1.6.0   | `1.21.5`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.0"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
 
 <sub>*There are more older versions, but I only figured out how semantic versioning works after 1.6.0*</sub>
+</details>
 
 ### build
 

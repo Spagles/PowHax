@@ -1,12 +1,12 @@
 package powie.powhax.modules;
 
+import meteordevelopment.meteorclient.events.entity.player.DoAttackEvent;
+import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.settings.BoolSetting;
-import meteordevelopment.meteorclient.settings.IntSetting;
-import meteordevelopment.meteorclient.settings.Setting;
-import meteordevelopment.meteorclient.settings.SettingGroup;
+import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
 import net.minecraft.util.Arm;
 import powie.powhax.Powhax;
 
@@ -21,16 +21,21 @@ public class HandDerp extends Module {
     );
 
     // TODO: pick modes. tick delay or on hand swing/attack
-
-//    private final Setting<enum>
+//    private final Setting<switchMode> mode = sgGeneral.add(new EnumSetting.Builder<switchMode>()
+//            .name("mode")
+//            .description("Choose the trigger method for hand switching")
+//            .defaultValue(switchMode.TickDelay)
+//            .build()
+//        );
 
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
             .name("Delay")
             .description("Delay of switching hands in ticks")
             .defaultValue(100) // 5 seconds
-                    .min(1)
-                    .sliderMin(1)
-                    .sliderMax(1200) // 1 minutes
+            .min(1)
+            .sliderMin(1)
+            .sliderMax(1200) // 1 minutes
+//            .visible(() -> mode.get() == switchMode.TickDelay)
             .build()
     );
 
@@ -55,13 +60,32 @@ public class HandDerp extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
+//        if (mode.get() == switchMode.TickDelay && delayCounter <= delay.get()) {
         if (delayCounter <= delay.get()) {
             delayCounter++;
             return;
         }
         switchHand();
-        info(String.valueOf(currentHand));
         delayCounter = 0;
+    }
+
+//    @EventHandler
+//    private void onAttack(DoAttackEvent event) {
+//        if (mode.get() != switchMode.OnAttack) return;
+//        switchHand();
+//    }
+
+    // data id 15 is hand thing
+    @EventHandler
+    private void onReceivePacket(PacketEvent.Receive event) {
+        if (!silent.get()) return;
+        if (!(event.packet instanceof EntityTrackerUpdateS2CPacket packet)) return;
+        
+        for (var data : packet.trackedValues()) {
+            if (data.id() != 15) continue;
+            event.cancel();
+            return;
+        }
     }
 
     private void switchHand() {
@@ -70,5 +94,8 @@ public class HandDerp extends Module {
         mc.options.sendClientSettings();
     }
 
-//    private enum mode
+//    private enum switchMode {
+//        TickDelay,
+//        OnAttack
+//    }
 }

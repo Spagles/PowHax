@@ -60,7 +60,7 @@ public class BedrockPrinter extends Module {
 
     @EventHandler
     private void onChunkData(ChunkDataEvent event) {
-        executor.execute(()->{
+        executor.execute(() -> {
             Chunk c = event.chunk();
             for (int x = c.getPos().getStartX(); x <= c.getPos().getEndX(); x++) {
                 for (int z = c.getPos().getStartZ(); z <= c.getPos().getEndZ(); z++) {
@@ -87,7 +87,7 @@ public class BedrockPrinter extends Module {
                 bw.flush();
                 bw.close();
                 info("Great success!");
-            }else {
+            } else {
                 info("File not found");
             }
         } catch (Exception e) {

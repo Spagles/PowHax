@@ -40,7 +40,7 @@ public class ArmorBuster extends Module {
         .build()
     );
 
-    private final Setting<Boolean> ignoreFriends= sgGeneral.add(new BoolSetting.Builder()
+    private final Setting<Boolean> ignoreFriends = sgGeneral.add(new BoolSetting.Builder()
         .name("ignore-friends")
         .description("Don't hit ur Meteor friends ok?")
         .defaultValue(true)
@@ -146,7 +146,8 @@ public class ArmorBuster extends Module {
     }
 
     private void attack(Entity target) {
-        if (rotation.get() == RotationMode.OnHit) Rotations.rotate(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body));
+        if (rotation.get() == RotationMode.OnHit)
+            Rotations.rotate(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body));
 
         mc.interactionManager.attackEntity(mc.player, target);
         mc.player.swingHand(Hand.MAIN_HAND);

@@ -43,7 +43,9 @@ public class AutoSell extends Module {
         if (mc.currentScreen == null) return;
         ClientPlayerEntity player = mc.player;
         if (player == null || player.currentScreenHandler == null) return;
-        if (!mc.currentScreen.getTitle().getString().equals(containerName.get()) || player.currentScreenHandler.slots.size() != 54) return; // 63 // 54
+        if (!mc.currentScreen.getTitle().getString().equals(containerName.get()) || player.currentScreenHandler.slots.size() != 54) {
+            return; // 63 // 54
+        }
         if (timer <= slotDelay.get()) {
             timer++;
             return;

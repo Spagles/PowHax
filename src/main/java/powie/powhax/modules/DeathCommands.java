@@ -26,10 +26,10 @@ public class DeathCommands extends Module {
     );
 
     private final Setting<Boolean> toggleAfterDeath = sgGeneral.add(new BoolSetting.Builder()
-            .name("Toggle After Death")
-            .description("Turns off the module after its activated.")
-            .defaultValue(false)
-            .build()
+        .name("Toggle After Death")
+        .description("Turns off the module after its activated.")
+        .defaultValue(false)
+        .build()
     );
 
     private final Setting<Integer> StartDelay = sgGeneral.add(new IntSetting.Builder()
@@ -94,7 +94,7 @@ public class DeathCommands extends Module {
         } else {
             commandQueue.addAll(commands.get());
         }
-        if (commandQueue.isEmpty()){
+        if (commandQueue.isEmpty()) {
             error("Theres no commands to run, idiot.");
             toggle();
             return;

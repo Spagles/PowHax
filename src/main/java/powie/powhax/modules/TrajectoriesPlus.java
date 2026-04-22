@@ -14,7 +14,8 @@ import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.*;
+import net.minecraft.entity.projectile.ProjectileEntity;
+import net.minecraft.entity.projectile.TridentEntity;
 import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.hit.BlockHitResult;
@@ -36,112 +37,112 @@ public class TrajectoriesPlus extends Module {
     private final SettingGroup sgRender = settings.createGroup("Render");
 
     private final Setting<List<Item>> items = sgGeneral.add(new ItemListSetting.Builder()
-            .name("items")
-            .description("Items to display trajectories for.")
-            .defaultValue(getDefaultItems())
-            .filter(this::itemFilter)
-            .build()
+        .name("items")
+        .description("Items to display trajectories for.")
+        .defaultValue(getDefaultItems())
+        .filter(this::itemFilter)
+        .build()
     );
 
     private final Setting<Boolean> otherPlayers = sgGeneral.add(new BoolSetting.Builder()
-            .name("other-players")
-            .description("Calculates trajectories for other players.")
-            .defaultValue(true)
-            .build()
+        .name("other-players")
+        .description("Calculates trajectories for other players.")
+        .defaultValue(true)
+        .build()
     );
 
     private final Setting<Boolean> firedProjectiles = sgGeneral.add(new BoolSetting.Builder()
-            .name("show-fired-projectiles")
-            .description("Calculates trajectories for already fired projectiles.")
-            .defaultValue(false)
-            .build()
+        .name("show-fired-projectiles")
+        .description("Calculates trajectories for already fired projectiles.")
+        .defaultValue(false)
+        .build()
     );
 
     private final Setting<Set<EntityType<?>>> firedProjectileEntities = sgGeneral.add(new EntityTypeListSetting.Builder()
-            .name("tracked-projectiles")
-            .description("Select projectile entities to track when fired")
-            .visible(firedProjectiles::get)
-            .defaultValue(getDefaultEntities())
-            .filter(this::projectileFilter)
-            .build()
+        .name("tracked-projectiles")
+        .description("Select projectile entities to track when fired")
+        .visible(firedProjectiles::get)
+        .defaultValue(getDefaultEntities())
+        .filter(this::projectileFilter)
+        .build()
     );
 
     private final Setting<Boolean> accurate = sgGeneral.add(new BoolSetting.Builder()
-            .name("accurate")
-            .description("Whether or not to calculate more accurate.")
-            .defaultValue(false)
-            .build()
+        .name("accurate")
+        .description("Whether or not to calculate more accurate.")
+        .defaultValue(false)
+        .build()
     );
 
     public final Setting<Integer> simulationSteps = sgGeneral.add(new IntSetting.Builder()
-            .name("simulation-steps")
-            .description("How many steps to simulate projectiles. Zero for no limit")
-            .defaultValue(500)
-            .sliderMax(5000)
-            .build()
+        .name("simulation-steps")
+        .description("How many steps to simulate projectiles. Zero for no limit")
+        .defaultValue(500)
+        .sliderMax(5000)
+        .build()
     );
 
     // Render
 
     private final Setting<Integer> ignoreFirstTicks = sgRender.add(new IntSetting.Builder()
-            .name("ignore-rendering-first-ticks")
-            .description("Ignores rendering the first given ticks, to make the rest of the path more visible.")
-            .defaultValue(3)
-            .min(0)
-            .build()
+        .name("ignore-rendering-first-ticks")
+        .description("Ignores rendering the first given ticks, to make the rest of the path more visible.")
+        .defaultValue(3)
+        .min(0)
+        .build()
     );
 
     private final Setting<ShapeMode> shapeMode = sgRender.add(new EnumSetting.Builder<ShapeMode>()
-            .name("shape-mode")
-            .description("How the shapes are rendered.")
-            .defaultValue(ShapeMode.Both)
-            .build()
+        .name("shape-mode")
+        .description("How the shapes are rendered.")
+        .defaultValue(ShapeMode.Both)
+        .build()
     );
 
     private final Setting<SettingColor> sideColor = sgRender.add(new ColorSetting.Builder()
-            .name("side-color")
-            .description("The side color.")
-            .defaultValue(new SettingColor(255, 150, 0, 35))
-            .build()
+        .name("side-color")
+        .description("The side color.")
+        .defaultValue(new SettingColor(255, 150, 0, 35))
+        .build()
     );
 
     private final Setting<SettingColor> lineColor = sgRender.add(new ColorSetting.Builder()
-            .name("line-color")
-            .description("The line color.")
-            .defaultValue(new SettingColor(255, 150, 0))
-            .build()
+        .name("line-color")
+        .description("The line color.")
+        .defaultValue(new SettingColor(255, 150, 0))
+        .build()
     );
 
     private final Setting<Boolean> renderPositionBox = sgRender.add(new BoolSetting.Builder()
-            .name("render-position-boxes")
-            .description("Renders the actual position the projectile will be at each tick along it's trajectory.")
-            .defaultValue(false)
-            .build()
+        .name("render-position-boxes")
+        .description("Renders the actual position the projectile will be at each tick along it's trajectory.")
+        .defaultValue(false)
+        .build()
     );
 
     private final Setting<Double> positionBoxSize = sgRender.add(new DoubleSetting.Builder()
-            .name("position-box-size")
-            .description("The size of the box drawn at the simulated positions.")
-            .defaultValue(0.02)
-            .sliderRange(0.01, 0.1)
-            .visible(renderPositionBox::get)
-            .build()
+        .name("position-box-size")
+        .description("The size of the box drawn at the simulated positions.")
+        .defaultValue(0.02)
+        .sliderRange(0.01, 0.1)
+        .visible(renderPositionBox::get)
+        .build()
     );
 
     private final Setting<SettingColor> positionSideColor = sgRender.add(new ColorSetting.Builder()
-            .name("position-side-color")
-            .description("The side color.")
-            .defaultValue(new SettingColor(255, 150, 0, 35))
-            .visible(renderPositionBox::get)
-            .build()
+        .name("position-side-color")
+        .description("The side color.")
+        .defaultValue(new SettingColor(255, 150, 0, 35))
+        .visible(renderPositionBox::get)
+        .build()
     );
 
     private final Setting<SettingColor> positionLineColor = sgRender.add(new ColorSetting.Builder()
-            .name("position-line-color")
-            .description("The line color.")
-            .defaultValue(new SettingColor(255, 150, 0))
-            .visible(renderPositionBox::get)
-            .build()
+        .name("position-line-color")
+        .description("The line color.")
+        .defaultValue(new SettingColor(255, 150, 0))
+        .visible(renderPositionBox::get)
+        .build()
     );
 
     private final ProjectileEntitySimulator simulator = new ProjectileEntitySimulator();
@@ -157,27 +158,27 @@ public class TrajectoriesPlus extends Module {
 
     private boolean itemFilter(Item item) {
         return item instanceof RangedWeaponItem || item instanceof FishingRodItem || item instanceof TridentItem ||
-                item instanceof SnowballItem || item instanceof EggItem || item instanceof EnderPearlItem ||
-                item instanceof ExperienceBottleItem || item instanceof ThrowablePotionItem || item instanceof WindChargeItem;
+            item instanceof SnowballItem || item instanceof EggItem || item instanceof EnderPearlItem ||
+            item instanceof ExperienceBottleItem || item instanceof ThrowablePotionItem || item instanceof WindChargeItem;
     }
 
     private boolean projectileFilter(EntityType<?> type) {
-        return type == EntityType.SMALL_FIREBALL  ||
-                type == EntityType.DRAGON_FIREBALL ||
-                // type == EntityType.FIREWORK_ROCKET || doesn't work
-                type == EntityType.LLAMA_SPIT ||
-                type == EntityType.ARROW ||
-                type == EntityType.SHULKER_BULLET ||
-                type == EntityType.EXPERIENCE_BOTTLE ||
-                type == EntityType.EGG ||
-                type == EntityType.ENDER_PEARL ||
-                type == EntityType.EYE_OF_ENDER ||
-                type == EntityType.SNOWBALL ||
-                type == EntityType.SPLASH_POTION ||
-                type == EntityType.TRIDENT ||
-                type == EntityType.WIND_CHARGE ||
-                type == EntityType.WITHER_SKULL ||
-                type == EntityType.SPECTRAL_ARROW;
+        return type == EntityType.SMALL_FIREBALL ||
+            type == EntityType.DRAGON_FIREBALL ||
+            // type == EntityType.FIREWORK_ROCKET || doesn't work
+            type == EntityType.LLAMA_SPIT ||
+            type == EntityType.ARROW ||
+            type == EntityType.SHULKER_BULLET ||
+            type == EntityType.EXPERIENCE_BOTTLE ||
+            type == EntityType.EGG ||
+            type == EntityType.ENDER_PEARL ||
+            type == EntityType.EYE_OF_ENDER ||
+            type == EntityType.SNOWBALL ||
+            type == EntityType.SPLASH_POTION ||
+            type == EntityType.TRIDENT ||
+            type == EntityType.WIND_CHARGE ||
+            type == EntityType.WITHER_SKULL ||
+            type == EntityType.SPECTRAL_ARROW;
 
     }
 
@@ -229,11 +230,15 @@ public class TrajectoriesPlus extends Module {
 
         // TODO: Account for multishot levels > 1. each level increments fired projectiles by 2. And maybe 10 radians apart?
         if (itemStack.getItem() instanceof CrossbowItem && Utils.hasEnchantment(itemStack, Enchantments.MULTISHOT)) {
-            if (!simulator.set(player, itemStack, MULTISHOT_OFFSET, accurate.get(), tickDelta)) return; // left multishot arrow
+            if (!simulator.set(player, itemStack, MULTISHOT_OFFSET, accurate.get(), tickDelta)) {
+                return; // left multishot arrow
+            }
             p = getEmptyPath().calculate();
             if (player == mc.player) p.ignoreFirstTicks();
 
-            if (!simulator.set(player, itemStack, -MULTISHOT_OFFSET, accurate.get(), tickDelta)) return; // right multishot arrow
+            if (!simulator.set(player, itemStack, -MULTISHOT_OFFSET, accurate.get(), tickDelta)) {
+                return; // right multishot arrow
+            }
             p = getEmptyPath().calculate();
             if (player == mc.player) p.ignoreFirstTicks();
         }
@@ -309,9 +314,9 @@ public class TrajectoriesPlus extends Module {
 
         public Path setStart(Entity entity, double tickDelta) {
             lastPoint = new Vector3d(
-                    MathHelper.lerp(tickDelta, entity.lastRenderX, entity.getX()),
-                    MathHelper.lerp(tickDelta, entity.lastRenderY, entity.getY()),
-                    MathHelper.lerp(tickDelta, entity.lastRenderZ, entity.getZ())
+                MathHelper.lerp(tickDelta, entity.lastRenderX, entity.getX()),
+                MathHelper.lerp(tickDelta, entity.lastRenderY, entity.getY()),
+                MathHelper.lerp(tickDelta, entity.lastRenderZ, entity.getZ())
             );
 
             return this;
@@ -341,15 +346,13 @@ public class TrajectoriesPlus extends Module {
                         hitQuadZ1 -= 0.25;
                         hitQuadX2 += 0.25;
                         hitQuadZ2 += 0.25;
-                    }
-                    else if (r.getSide() == Direction.NORTH || r.getSide() == Direction.SOUTH) {
+                    } else if (r.getSide() == Direction.NORTH || r.getSide() == Direction.SOUTH) {
                         hitQuadHorizontal = false;
                         hitQuadX1 -= 0.25;
                         hitQuadY1 -= 0.25;
                         hitQuadX2 += 0.25;
                         hitQuadY2 += 0.25;
-                    }
-                    else {
+                    } else {
                         hitQuadHorizontal = false;
                         hitQuadZ1 -= 0.25;
                         hitQuadY1 -= 0.25;
@@ -358,8 +361,7 @@ public class TrajectoriesPlus extends Module {
                     }
 
                     points.add(Utils.set(vec3s.get(), result.getPos()));
-                }
-                else if (result.getType() == HitResult.Type.ENTITY) {
+                } else if (result.getType() == HitResult.Type.ENTITY) {
                     Entity entity = ((EntityHitResult) result).getEntity();
                     collidingEntities.add(entity);
 
@@ -383,9 +385,9 @@ public class TrajectoriesPlus extends Module {
                     event.renderer.line(lastPoint.x, lastPoint.y, lastPoint.z, point.x, point.y, point.z, lineColor.get());
                     if (renderPositionBox.get()) {
                         event.renderer.box(
-                                point.x - positionBoxSize.get(), point.y - positionBoxSize.get(), point.z - positionBoxSize.get(),
-                                point.x + positionBoxSize.get(), point.y + positionBoxSize.get(), point.z + positionBoxSize.get(),
-                                positionSideColor.get(), positionLineColor.get(), shapeMode.get(), 0
+                            point.x - positionBoxSize.get(), point.y - positionBoxSize.get(), point.z - positionBoxSize.get(),
+                            point.x + positionBoxSize.get(), point.y + positionBoxSize.get(), point.z + positionBoxSize.get(),
+                            positionSideColor.get(), positionLineColor.get(), shapeMode.get(), 0
                         );
                     }
                 }
@@ -395,8 +397,10 @@ public class TrajectoriesPlus extends Module {
 
             // Render hit quad
             if (hitQuad) {
-                if (hitQuadHorizontal) event.renderer.sideHorizontal(hitQuadX1, hitQuadY1, hitQuadZ1, hitQuadX1 + 0.5, hitQuadZ1 + 0.5, sideColor.get(), lineColor.get(), shapeMode.get());
-                else event.renderer.sideVertical(hitQuadX1, hitQuadY1, hitQuadZ1, hitQuadX2, hitQuadY2, hitQuadZ2, sideColor.get(), lineColor.get(), shapeMode.get());
+                if (hitQuadHorizontal)
+                    event.renderer.sideHorizontal(hitQuadX1, hitQuadY1, hitQuadZ1, hitQuadX1 + 0.5, hitQuadZ1 + 0.5, sideColor.get(), lineColor.get(), shapeMode.get());
+                else
+                    event.renderer.sideVertical(hitQuadX1, hitQuadY1, hitQuadZ1, hitQuadX2, hitQuadY2, hitQuadZ2, sideColor.get(), lineColor.get(), shapeMode.get());
             }
 
             // Render entity

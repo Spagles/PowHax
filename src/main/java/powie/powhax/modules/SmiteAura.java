@@ -38,7 +38,7 @@ import java.util.Set;
 
 public class SmiteAura extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
-    private final SettingGroup sgTargeting =settings.createGroup("Targeting");
+    private final SettingGroup sgTargeting = settings.createGroup("Targeting");
 
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
         .name("Delay")
@@ -81,10 +81,10 @@ public class SmiteAura extends Module {
     );
 
     private final Setting<Boolean> pauseOnBreakingBlock = sgGeneral.add(new BoolSetting.Builder()
-            .name("pause-on-breaking-block")
-            .description("Does not smite while breaking a block.")
-            .defaultValue(false)
-            .build()
+        .name("pause-on-breaking-block")
+        .description("Does not smite while breaking a block.")
+        .defaultValue(false)
+        .build()
     );
 
 //    private final Setting<Boolean> pauseOnMove = sgGeneral.add(new BoolSetting.Builder()
@@ -239,8 +239,8 @@ public class SmiteAura extends Module {
         if (!entity.isOnGround()) return false;
         if (ignoreTamed.get()) {
             if (entity instanceof Tameable tameable
-                    && tameable.getOwner() != null
-                    && tameable.getOwner().equals(mc.player)
+                && tameable.getOwner() != null
+                && tameable.getOwner().equals(mc.player)
             ) return false;
         }
         if (ignorePassive.get()) {

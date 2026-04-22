@@ -15,28 +15,28 @@ public class HandDerp extends Module {
 
     // TODO: when turned on, switch to the original hand.
     private final Setting<Boolean> silent = sgGeneral.add(new BoolSetting.Builder()
-            .name("Silent")
-            .description("Hides hand switching animations on the client side")
-            .defaultValue(true)
-            .build()
+        .name("Silent")
+        .description("Hides hand switching animations on the client side")
+        .defaultValue(true)
+        .build()
     );
 
     private final Setting<switchMode> mode = sgGeneral.add(new EnumSetting.Builder<switchMode>()
-            .name("mode")
-            .description("Choose the trigger method for hand switching")
-            .defaultValue(switchMode.TickDelay)
-            .build()
+        .name("mode")
+        .description("Choose the trigger method for hand switching")
+        .defaultValue(switchMode.TickDelay)
+        .build()
     );
 
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
-            .name("Delay")
-            .description("Delay of switching hands in ticks")
-            .defaultValue(100) // 5 seconds
-            .min(1)
-            .sliderMin(1)
-            .sliderMax(1200) // 1 minutes
-            .visible(() -> mode.get() == switchMode.TickDelay)
-            .build()
+        .name("Delay")
+        .description("Delay of switching hands in ticks")
+        .defaultValue(100) // 5 seconds
+        .min(1)
+        .sliderMin(1)
+        .sliderMax(1200) // 1 minutes
+        .visible(() -> mode.get() == switchMode.TickDelay)
+        .build()
     );
 
     private int delayCounter = 0;

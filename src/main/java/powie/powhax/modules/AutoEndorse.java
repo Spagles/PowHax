@@ -86,7 +86,7 @@ public class AutoEndorse extends Module {
     @EventHandler
     private void onOpenScreen(OpenScreenEvent event) {
         if (mc.player == null || mc.world == null) return;
-        if(!(event.screen instanceof SignEditScreen) && !(event.screen instanceof HangingSignEditScreen)) return;
+        if (!(event.screen instanceof SignEditScreen) && !(event.screen instanceof HangingSignEditScreen)) return;
 
         Entity target = getTarget(targetRange.get(), targetPriority.get());
         if (target == null) {
@@ -99,12 +99,12 @@ public class AutoEndorse extends Module {
         String[] lines = composeLines(target.getName().getString());
 
         mc.player.networkHandler.sendPacket(new UpdateSignC2SPacket(
-                sign.getPos(),
-                true,
-                lines[0],
-                lines[1],
-                lines[2],
-                lines[3]
+            sign.getPos(),
+            true,
+            lines[0],
+            lines[1],
+            lines[2],
+            lines[3]
         ));
 
         event.cancel();

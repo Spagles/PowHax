@@ -149,7 +149,9 @@ public class BlazeFarm extends Module {
 
         if (!itemInHand()) return;
         attacking = true;
-        if (rotation.get() == RotationMode.Always) Rotations.rotate(Rotations.getYaw(primary), Rotations.getPitch(primary, Target.Body));
+        if (rotation.get() == RotationMode.Always) {
+            Rotations.rotate(Rotations.getYaw(primary), Rotations.getPitch(primary, Target.Body));
+        }
         if (delayCheck()) targets.forEach(this::attack);
 
         if (autoFix.get()) fix();
@@ -161,9 +163,11 @@ public class BlazeFarm extends Module {
         FindItemResult item = InvUtils.findInHotbar(Items.BLAZE_ROD);
         if (!item.found()) {
             if (20 <= sellDelay.get()) info("Blaze rod not found in hotbar");
-            if (600 >= sellDelay.get()) sellTimer = 0; // if sellDelay is lower than 30 seconds, then reset sellTimer(tick)
-            return;
-        };
+            if (600 >= sellDelay.get()) {
+                sellTimer = 0; // if sellDelay is lower than 30 seconds, then reset sellTimer(tick)
+                return;
+            }
+        }
         int prevSlot = mc.player.getInventory().getSelectedSlot();
         InvUtils.swap(item.slot(), false);
         ChatUtils.sendPlayerMsg("/sell handall");
@@ -200,13 +204,15 @@ public class BlazeFarm extends Module {
     }
 
     private void attack(Entity target) {
-        if (rotation.get() == RotationMode.OnHit) Rotations.rotate(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body));
+        if (rotation.get() == RotationMode.OnHit) {
+            Rotations.rotate(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body));
+        }
 
         mc.interactionManager.attackEntity(mc.player, target);
         mc.player.swingHand(Hand.MAIN_HAND);
     }
 
-    private void fix () {
+    private void fix() {
         if (autoFixDelay.get() >= fixTimer) {
             fixTimer++;
         } else {
@@ -221,7 +227,8 @@ public class BlazeFarm extends Module {
         return switch (weapon.get()) {
             case Axe -> mc.player.getMainHandStack().getItem() instanceof AxeItem;
             case Sword -> mc.player.getMainHandStack().isIn(ItemTags.SWORDS);
-            case Both -> mc.player.getMainHandStack().getItem() instanceof AxeItem || mc.player.getMainHandStack().isIn(ItemTags.SWORDS);
+            case Both ->
+                mc.player.getMainHandStack().getItem() instanceof AxeItem || mc.player.getMainHandStack().isIn(ItemTags.SWORDS);
             default -> true;
         };
     }

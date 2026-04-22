@@ -13,20 +13,20 @@ import powie.powhax.Powhax;
 public class HandDerp extends Module {
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
 
+    // TODO: when turned on, switch to the original hand.
     private final Setting<Boolean> silent = sgGeneral.add(new BoolSetting.Builder()
             .name("Silent")
-            .description("Whether to show hand switching client")
+            .description("Hides hand switching animations on the client side")
             .defaultValue(true)
             .build()
     );
 
-    // TODO: pick modes. tick delay or on hand swing/attack
-//    private final Setting<switchMode> mode = sgGeneral.add(new EnumSetting.Builder<switchMode>()
-//            .name("mode")
-//            .description("Choose the trigger method for hand switching")
-//            .defaultValue(switchMode.TickDelay)
-//            .build()
-//        );
+    private final Setting<switchMode> mode = sgGeneral.add(new EnumSetting.Builder<switchMode>()
+            .name("mode")
+            .description("Choose the trigger method for hand switching")
+            .defaultValue(switchMode.TickDelay)
+            .build()
+    );
 
     private final Setting<Integer> delay = sgGeneral.add(new IntSetting.Builder()
             .name("Delay")
@@ -35,7 +35,7 @@ public class HandDerp extends Module {
             .min(1)
             .sliderMin(1)
             .sliderMax(1200) // 1 minutes
-//            .visible(() -> mode.get() == switchMode.TickDelay)
+            .visible(() -> mode.get() == switchMode.TickDelay)
             .build()
     );
 
@@ -44,7 +44,7 @@ public class HandDerp extends Module {
     private Arm currentHand = mc.options.getMainArm().getValue();
 
     public HandDerp() {
-        super(Powhax.CATEGORY, "hand-derp", "Switches your main hand.");
+        super(Powhax.CATEGORY, "hand-derp", "Automatically switches between left and right main hand.");
     }
 
     @Override
@@ -60,7 +60,7 @@ public class HandDerp extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
-//        if (mode.get() == switchMode.TickDelay && delayCounter <= delay.get()) {
+        if (mode.get() != switchMode.TickDelay) return;
         if (delayCounter <= delay.get()) {
             delayCounter++;
             return;
@@ -69,18 +69,18 @@ public class HandDerp extends Module {
         delayCounter = 0;
     }
 
-//    @EventHandler
-//    private void onAttack(DoAttackEvent event) {
-//        if (mode.get() != switchMode.OnAttack) return;
-//        switchHand();
-//    }
+    @EventHandler
+    private void onAttack(DoAttackEvent event) {
+        if (mode.get() != switchMode.OnAttack) return;
+        switchHand();
+    }
 
     // data id 15 is hand thing
     @EventHandler
     private void onReceivePacket(PacketEvent.Receive event) {
         if (!silent.get()) return;
         if (!(event.packet instanceof EntityTrackerUpdateS2CPacket packet)) return;
-        
+
         for (var data : packet.trackedValues()) {
             if (data.id() != 15) continue;
             event.cancel();
@@ -94,8 +94,8 @@ public class HandDerp extends Module {
         mc.options.sendClientSettings();
     }
 
-//    private enum switchMode {
-//        TickDelay,
-//        OnAttack
-//    }
+    private enum switchMode {
+        TickDelay,
+        OnAttack
+    }
 }

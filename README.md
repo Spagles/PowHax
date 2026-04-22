@@ -8,14 +8,15 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 
 | Module Name     | Description                                                                                                            | For                                                                                               |
 |-----------------|------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| Armor-buster    | Tries to break a player's armor with [armor impact ability.](https://mcmmo.fandom.com/wiki/Axes_(Combat)#Armor_Impact) | [mcmmo](https://mcmmo.org/#home)                                                                  |
-| Auto-Endorse    | Places a sign with specified text. The last line will contain the name of the player nearest to you.                   |                                                                                                   |
-| Auto-Login      | Runs `/login` command when you join a server. very basic implementation.                                               | any auth plugin                                                                                   |
-| Auto-Sell       | Automatically sells a stack in Tradeview.                                                                              | [Dynamic Shop](https://www.spigotmc.org/resources/discontinued-dynamicshop-3-1-16-5-1-21.65603)   |
-| Bedrock-Printer | Writes the position of bedrock in the nether in a file. meant for seed cracking.                                       | [Nether Bedrock Cracker](https://github.com/19MisterX98/Nether_Bedrock_Cracker)                   |
-| Death-Commands  | Run commands when you respawn. supports [StarScript](https://meteorclient.com/faq/starscript).                         |                                                                                                   |
-| Fly-Speed       | Modifies your fly speed.                                                                                               | Anythint that gives you the flight abilities like[`/fly` in essentialsX](https://essentialsx.net) |
-| Smite-aura      | Automatically strikes lighting on specified entities around you.                                                       | [`/lighting` in essentialsX](https://essentialsx.net/)                                            |
+| Armor buster    | Tries to break a player's armor with [armor impact ability.](https://mcmmo.fandom.com/wiki/Axes_(Combat)#Armor_Impact) | [mcmmo](https://mcmmo.org/#home)                                                                  |
+| Auto Endorse    | Places a sign with specified text. The last line will contain the name of the player nearest to you.                   |                                                                                                   |
+| Auto Login      | Runs `/login` command when you join a server. very basic implementation.                                               | any auth plugin                                                                                   |
+| Auto Sell       | Automatically sells a stack in Tradeview.                                                                              | [Dynamic Shop](https://www.spigotmc.org/resources/discontinued-dynamicshop-3-1-16-5-1-21.65603)   |
+| Bedrock Printer | Writes the position of bedrock in the nether in a file. meant for seed cracking.                                       | [Nether Bedrock Cracker](https://github.com/19MisterX98/Nether_Bedrock_Cracker)                   |
+| Death Commands  | Run commands when you respawn. supports [StarScript](https://meteorclient.com/faq/starscript).                         |                                                                                                   |
+| Fly Speed       | Modifies your fly speed.                                                                                               | Anything that gives you the flight abilities like[`/fly` in essentialsX](https://essentialsx.net) |
+| Hand Derp       | Automatically switches between left and right main hand.                                                               |                                                                                                   |
+| Smite aura      | Automatically strikes lighting on specified entities around you.                                                       | [`/lighting` in essentialsX](https://essentialsx.net/)                                            |
 | Trajectories+   | Select which fired entities to track                                                                                   |                                                                                                   |
 
 ## Commands
@@ -47,7 +48,7 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 <details>
 <summary><h3 style="display: inline">Old versions</h3></summary>
 
-These older versions are no longer supported. There're crappy.
+These older versions are no longer supported.
 
 | Version | Minecraft<br> version | Release<br>Page                                                                                                                                                |
 |---------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -59,7 +60,12 @@ These older versions are no longer supported. There're crappy.
 <sub>*There are more older versions, but I only figured out how semantic versioning works after 1.6.0*</sub>
 </details>
 
-### build
+<details>
+<summary><h3 style="display: inline">Build</h3></summary> 
 
 If you don't trust the very many download buttons. You can compile the addon yourself.
 [Here is tutorial on how to compile Minecraft mods.](https://youtu.be/5dEgxdLUQoI)
+
+</details>
+
+⭐ Please consider starring ty!

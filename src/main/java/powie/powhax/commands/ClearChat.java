@@ -2,7 +2,7 @@ package powie.powhax.commands;
 
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import meteordevelopment.meteorclient.commands.Command;
-import net.minecraft.command.CommandSource;
+import net.minecraft.client.multiplayer.ClientSuggestionProvider;
 
 public class ClearChat extends Command {
     public ClearChat() {
@@ -10,9 +10,9 @@ public class ClearChat extends Command {
     }
 
     @Override
-    public void build(LiteralArgumentBuilder<CommandSource> builder) {
-        builder.executes(context -> {
-            mc.inGameHud.getChatHud().clear(false);
+    public void build(LiteralArgumentBuilder<ClientSuggestionProvider> builder) {
+        builder.executes(_ -> {
+            mc.gui.getChat().clearMessages(false);
             return SINGLE_SUCCESS;
         });
     }

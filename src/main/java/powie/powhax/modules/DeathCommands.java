@@ -85,7 +85,7 @@ public class DeathCommands extends Module {
 
     @EventHandler
     private void onReceivePacket(PacketEvent.Receive event) {
-        if (!(event.packet instanceof net.minecraft.network.packet.s2c.play.PlayerRespawnS2CPacket) || running) return;
+        if (!(event.packet instanceof net.minecraft.network.protocol.game.ClientboundRespawnPacket) || running) return;
 
         commandQueue.clear();
 

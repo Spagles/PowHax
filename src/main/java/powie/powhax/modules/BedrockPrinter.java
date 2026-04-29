@@ -14,10 +14,10 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.block.Blocks;
+import net.minecraft.core.BlockPos;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.chunk.ChunkAccess;
 import powie.powhax.Powhax;
 
 import java.io.*;
@@ -54,16 +54,16 @@ public class BedrockPrinter extends Module {
         l.add(theme.label("this module is meant to be used for Nether Bedrock Cracker"));
         l.add(theme.label("https://github.com/19MisterX98/Nether_Bedrock_Cracker/"));
         WButton button = l.add(theme.button("open github repo")).widget();
-        button.action = () -> Util.getOperatingSystem().open("https://github.com/19MisterX98/Nether_Bedrock_Cracker/");
+        button.action = () -> Util.getPlatform().openUri("https://github.com/19MisterX98/Nether_Bedrock_Cracker/");
         return l;
     }
 
     @EventHandler
     private void onChunkData(ChunkDataEvent event) {
         executor.execute(() -> {
-            Chunk c = event.chunk();
-            for (int x = c.getPos().getStartX(); x <= c.getPos().getEndX(); x++) {
-                for (int z = c.getPos().getStartZ(); z <= c.getPos().getEndZ(); z++) {
+            ChunkAccess c = event.chunk();
+            for (int x = c.getPos().getMinBlockX(); x <= c.getPos().getMaxBlockX(); x++) {
+                for (int z = c.getPos().getMinBlockZ(); z <= c.getPos().getMaxBlockZ(); z++) {
                     BlockPos sPos = new BlockPos(x, searchY.get().getValue(), z);
                     if (!c.getBlockState(sPos).getBlock().equals(Blocks.BEDROCK)) return;
                     bedrockPos.add(sPos);

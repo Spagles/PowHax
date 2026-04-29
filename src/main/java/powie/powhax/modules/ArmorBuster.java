@@ -14,16 +14,16 @@ import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.AxeItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.world.GameMode;
+import net.minecraft.util.Mth;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.AxeItem;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.phys.AABB;
 import powie.powhax.Powhax;
 
 import java.util.ArrayList;
@@ -102,7 +102,7 @@ public class ArmorBuster extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Pre event) {
-        if (!mc.player.isAlive() || PlayerUtils.getGameMode() == GameMode.SPECTATOR) return;
+        if (!mc.player.isAlive() || PlayerUtils.getGameMode() == GameType.SPECTATOR) return;
         if (TickRate.INSTANCE.getTimeSinceLastTick() >= 1f && pauseOnLag.get()) return;
 
         targets.clear();
@@ -119,7 +119,7 @@ public class ArmorBuster extends Module {
             if (!weaponResult.found()) return;
             InvUtils.swap(weaponResult.slot(), false);
         }
-        if (!(mc.player.getMainHandStack().getItem() instanceof AxeItem)) return;
+        if (!(mc.player.getMainHandItem().getItem() instanceof AxeItem)) return;
 
         attacking = true;
         targets.forEach(this::attack);
@@ -127,17 +127,19 @@ public class ArmorBuster extends Module {
 
     private boolean entityCheck(Entity entity) {
         if (entity.equals(mc.player) || entity.equals(mc.getCameraEntity())) return false;
-        if ((entity instanceof LivingEntity livingEntity && livingEntity.isDead()) || !entity.isAlive()) return false;
+        if ((entity instanceof LivingEntity livingEntity && livingEntity.isDeadOrDying()) || !entity.isAlive()) {
+            return false;
+        }
 
-        Box hitbox = entity.getBoundingBox();
+        AABB hitbox = entity.getBoundingBox();
         if (!PlayerUtils.isWithin(
-            MathHelper.clamp(mc.player.getX(), hitbox.minX, hitbox.maxX),
-            MathHelper.clamp(mc.player.getY(), hitbox.minY, hitbox.maxY),
-            MathHelper.clamp(mc.player.getZ(), hitbox.minZ, hitbox.maxZ),
+            Mth.clamp(mc.player.getX(), hitbox.minX, hitbox.maxX),
+            Mth.clamp(mc.player.getY(), hitbox.minY, hitbox.maxY),
+            Mth.clamp(mc.player.getZ(), hitbox.minZ, hitbox.maxZ),
             range.get()
         )) return false;
         if (entity.getType() != EntityType.PLAYER) return false;
-        if (entity instanceof PlayerEntity player) {
+        if (entity instanceof Player player) {
             if (player.isCreative()) return false;
             if (ignoreFriends.get() && !Friends.get().shouldAttack(player)) return false;
         }
@@ -146,11 +148,12 @@ public class ArmorBuster extends Module {
     }
 
     private void attack(Entity target) {
-        if (rotation.get() == RotationMode.OnHit)
+        if (rotation.get() == RotationMode.OnHit) {
             Rotations.rotate(Rotations.getYaw(target), Rotations.getPitch(target, Target.Body));
+        }
 
-        mc.interactionManager.attackEntity(mc.player, target);
-        mc.player.swingHand(Hand.MAIN_HAND);
+        mc.gameMode.attack(mc.player, target);
+        mc.player.swing(InteractionHand.MAIN_HAND);
     }
 
     public Entity getTarget() {

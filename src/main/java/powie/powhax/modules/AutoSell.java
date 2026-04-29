@@ -7,8 +7,8 @@ import meteordevelopment.meteorclient.settings.SettingGroup;
 import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.inventory.ContainerInput;
 import powie.powhax.Powhax;
 
 public class AutoSell extends Module {
@@ -40,10 +40,10 @@ public class AutoSell extends Module {
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
-        if (mc.currentScreen == null) return;
-        ClientPlayerEntity player = mc.player;
-        if (player == null || player.currentScreenHandler == null) return;
-        if (!mc.currentScreen.getTitle().getString().equals(containerName.get()) || player.currentScreenHandler.slots.size() != 54) {
+        if (mc.screen == null) return;
+        LocalPlayer player = mc.player;
+        if (player == null || player.containerMenu == null) return;
+        if (!mc.screen.getTitle().getString().equals(containerName.get()) || player.containerMenu.slots.size() != 54) {
             return; // 63 // 54
         }
         if (timer <= slotDelay.get()) {
@@ -51,11 +51,11 @@ public class AutoSell extends Module {
             return;
         }
 
-        mc.interactionManager.clickSlot(
-            player.currentScreenHandler.syncId,
+        mc.gameMode.handleContainerInput(
+            mc.player.containerMenu.containerId,
             8,
             0,
-            SlotActionType.PICKUP,
+            ContainerInput.PICKUP,
             player
         );
 

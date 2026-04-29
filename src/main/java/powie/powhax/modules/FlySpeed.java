@@ -31,11 +31,11 @@ public class FlySpeed extends Module {
 
     @Override
     public void onActivate() {
-        mc.player.getAbilities().setFlySpeed(speed.get().floatValue());
+        mc.player.getAbilities().setFlyingSpeed(speed.get().floatValue());
     }
 
     @Override
     public void onDeactivate() {
-        mc.player.getAbilities().setFlySpeed(0.05f);
+        mc.player.getAbilities().setFlyingSpeed(0.05f);
     }
 }

@@ -2,7 +2,7 @@ package powie.powhax.modules;
 
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
-import meteordevelopment.meteorclient.mixininterface.IVec3d;
+import meteordevelopment.meteorclient.mixininterface.IVec3;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
@@ -15,21 +15,21 @@ import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.Tameable;
-import net.minecraft.entity.mob.EndermanEntity;
-import net.minecraft.entity.mob.ZombifiedPiglinEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.passive.WolfEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.hit.HitResult;
-import net.minecraft.util.math.Box;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.GameMode;
-import net.minecraft.world.RaycastContext;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.wolf.Wolf;
+import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.zombie.ZombifiedPiglin;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
+import net.minecraft.world.level.GameType;
+import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import powie.powhax.Powhax;
 
 import java.util.ArrayList;
@@ -183,9 +183,9 @@ public class SmiteAura extends Module {
             timer++;
             return;
         }
-        if (!mc.player.isAlive() || PlayerUtils.getGameMode() == GameMode.SPECTATOR) return;
+        if (!mc.player.isAlive() || PlayerUtils.getGameMode() == GameType.SPECTATOR) return;
         if (pauseOnUse.get() && mc.player.isUsingItem()) return;
-        if (pauseOnBreakingBlock.get() && mc.interactionManager.isBreakingBlock()) return;
+        if (pauseOnBreakingBlock.get() && mc.gameMode.isDestroying()) return;
 //        if (pauseOnMove.get() && mc.player.speed >= pauseOnMoveSpeedThreshold.get()) return;
         if (TickRate.INSTANCE.getTimeSinceLastTick() >= 1f && pauseOnLag.get()) return;
 
@@ -223,36 +223,37 @@ public class SmiteAura extends Module {
 
     private boolean entityCheck(Entity entity) {
         if (entity.equals(mc.player) || entity.equals(mc.getCameraEntity())) return false;
-        if ((entity instanceof LivingEntity livingEntity && livingEntity.isDead()) || !entity.isAlive()) return false;
+        if ((entity instanceof LivingEntity livingEntity && livingEntity.isDeadOrDying()) || !entity.isAlive())
+            return false;
 
-        Box hitbox = entity.getBoundingBox();
+        AABB hitbox = entity.getBoundingBox();
         if (!PlayerUtils.isWithin(
-            MathHelper.clamp(mc.player.getX(), hitbox.minX, hitbox.maxX),
-            MathHelper.clamp(mc.player.getY(), hitbox.minY, hitbox.maxY),
-            MathHelper.clamp(mc.player.getZ(), hitbox.minZ, hitbox.maxZ),
+            Mth.clamp(mc.player.getX(), hitbox.minX, hitbox.maxX),
+            Mth.clamp(mc.player.getY(), hitbox.minY, hitbox.maxY),
+            Mth.clamp(mc.player.getZ(), hitbox.minZ, hitbox.maxZ),
             range.get()
         )) return false;
 
         if (!entities.get().contains(entity.getType())) return false;
         if (!canSeeEntityFeet(entity)) return false;
         if (ignoreNamed.get() && entity.hasCustomName()) return false;
-        if (!entity.isOnGround()) return false;
+        if (!entity.onGround()) return false;
         if (ignoreTamed.get()) {
-            if (entity instanceof Tameable tameable
+            if (entity instanceof OwnableEntity tameable
                 && tameable.getOwner() != null
                 && tameable.getOwner().equals(mc.player)
             ) return false;
         }
         if (ignorePassive.get()) {
-            if (entity instanceof EndermanEntity enderman && !enderman.isAngry()) return false;
-            if (entity instanceof ZombifiedPiglinEntity piglin && !piglin.isAttacking()) return false;
-            if (entity instanceof WolfEntity wolf && !wolf.isAttacking()) return false;
+            if (entity instanceof EnderMan enderman && !enderman.isAngry()) return false;
+            if (entity instanceof ZombifiedPiglin piglin && !piglin.isAggressive()) return false;
+            if (entity instanceof Wolf wolf && !wolf.isAggressive()) return false;
         }
-        if (entity instanceof PlayerEntity player) {
+        if (entity instanceof Player player) {
             if (player.isCreative()) return false;
             if (!Friends.get().shouldAttack(player)) return false;
         }
-        if (entity instanceof AnimalEntity animal) {
+        if (entity instanceof Animal animal) {
             return switch (mobAgeFilter.get()) {
                 case Baby -> animal.isBaby();
                 case Adult -> !animal.isBaby();
@@ -263,14 +264,13 @@ public class SmiteAura extends Module {
     }
 
     public boolean canSeeEntityFeet(Entity entity) {
-        Vec3d vec1 = new Vec3d(0, 0, 0);
-        Vec3d vec2 = new Vec3d(0, 0, 0);
+        Vec3 vec1 = new Vec3(0, 0, 0);
+        Vec3 vec2 = new Vec3(0, 0, 0);
 
-        ((IVec3d) vec1).meteor$set(mc.player.getX(), mc.player.getY() + mc.player.getStandingEyeHeight(), mc.player.getZ());
-        ((IVec3d) vec2).meteor$set(entity.getX(), entity.getY(), entity.getZ());
-        boolean canSeeFeet = mc.world.raycast(new RaycastContext(vec1, vec2, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, mc.player)).getType() == HitResult.Type.MISS;
+        ((IVec3) vec1).meteor$set(mc.player.getX(), mc.player.getY() + mc.player.getEyeHeight(), mc.player.getZ());
+        ((IVec3) vec2).meteor$set(entity.getX(), entity.getY(), entity.getZ());
 
-        return canSeeFeet;
+        return mc.level.clip(new ClipContext(vec1, vec2, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, mc.player)).getType() == HitResult.Type.MISS;
     }
 
     public Entity getTarget() {

@@ -6,8 +6,10 @@ import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.network.packet.s2c.play.EntityTrackerUpdateS2CPacket;
-import net.minecraft.util.Arm;
+import net.minecraft.network.protocol.common.ServerboundClientInformationPacket;
+import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
+import net.minecraft.server.level.ClientInformation;
+import net.minecraft.world.entity.HumanoidArm;
 import powie.powhax.Powhax;
 
 public class HandDerp extends Module {
@@ -40,8 +42,8 @@ public class HandDerp extends Module {
     );
 
     private int delayCounter = 0;
-    private Arm originalHand = mc.options.getMainArm().getValue();
-    private Arm currentHand = mc.options.getMainArm().getValue();
+    private HumanoidArm originalHand = mc.options.mainHand().get();
+    private HumanoidArm currentHand = mc.options.mainHand().get();
 
     public HandDerp() {
         super(Powhax.CATEGORY, "hand-derp", "Automatically switches between left and right main hand.");
@@ -49,13 +51,14 @@ public class HandDerp extends Module {
 
     @Override
     public void onActivate() {
-        originalHand = mc.options.getMainArm().getValue();
+        originalHand = mc.options.mainHand().get();
     }
 
     @Override
     public void onDeactivate() {
-        mc.options.getMainArm().setValue(originalHand);
-        mc.options.sendClientSettings();
+        mc.options.mainHand().set(originalHand);
+        ClientInformation updatedInfo = createClientInformationWithHand(originalHand);
+        mc.player.connection.send(new ServerboundClientInformationPacket(updatedInfo));
     }
 
     @EventHandler
@@ -79,9 +82,9 @@ public class HandDerp extends Module {
     @EventHandler
     private void onReceivePacket(PacketEvent.Receive event) {
         if (!silent.get()) return;
-        if (!(event.packet instanceof EntityTrackerUpdateS2CPacket packet)) return;
+        if (!(event.packet instanceof ClientboundSetEntityDataPacket packet)) return;
 
-        for (var data : packet.trackedValues()) {
+        for (var data : packet.packedItems()) {
             if (data.id() != 15) continue;
             event.cancel();
             return;
@@ -89,9 +92,25 @@ public class HandDerp extends Module {
     }
 
     private void switchHand() {
-        currentHand = currentHand == Arm.LEFT ? Arm.RIGHT : Arm.LEFT;
-        mc.options.getMainArm().setValue(currentHand);
-        mc.options.sendClientSettings();
+        currentHand = currentHand == HumanoidArm.LEFT ? HumanoidArm.RIGHT : HumanoidArm.LEFT;
+        ClientInformation updatedInfo = createClientInformationWithHand(currentHand);
+        mc.player.connection.send(new ServerboundClientInformationPacket(updatedInfo));
+    }
+
+    // usually I'll repeat this code because its only 2 usages but Claude said so.....
+    private ClientInformation createClientInformationWithHand(HumanoidArm hand) {
+        ClientInformation currentInfo = mc.options.buildPlayerInformation();
+        return new ClientInformation(
+            currentInfo.language(),
+            currentInfo.viewDistance(),
+            currentInfo.chatVisibility(),
+            currentInfo.chatColors(),
+            currentInfo.modelCustomisation(),
+            hand,
+            currentInfo.textFilteringEnabled(),
+            currentInfo.allowsListing(),
+            currentInfo.particleStatus()
+        );
     }
 
     private enum switchMode {

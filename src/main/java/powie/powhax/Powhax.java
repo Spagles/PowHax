@@ -5,7 +5,6 @@ import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.commands.Commands;
-import meteordevelopment.meteorclient.systems.hud.HudGroup;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
 import net.fabricmc.loader.api.metadata.CustomValue;
@@ -20,7 +19,7 @@ import static meteordevelopment.meteorclient.MeteorClient.MOD_META;
 public class Powhax extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
     public static final Category CATEGORY = new Category("PowHax");
-    public static final HudGroup HUD_GROUP = new HudGroup("PowHax");
+//    public static final HudGroup HUD_GROUP = new HudGroup("PowHax");
 
     @Override
     public void onInitialize() {
@@ -35,7 +34,6 @@ public class Powhax extends MeteorAddon {
         Modules.get().add(new BedrockPrinter());
         Modules.get().add(new BlazeFarm());
         Modules.get().add(new DeathCommands());
-        Modules.get().add(new DimensionGodMode());
         Modules.get().add(new FlySpeed());
         Modules.get().add(new HandDerp());
         Modules.get().add(new SmiteAura());

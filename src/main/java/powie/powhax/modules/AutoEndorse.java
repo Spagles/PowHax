@@ -14,12 +14,11 @@ import meteordevelopment.meteorclient.utils.entity.TargetUtils;
 import meteordevelopment.meteorclient.utils.entity.fakeplayer.FakePlayerEntity;
 import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.orbit.EventHandler;
-import net.minecraft.block.entity.SignBlockEntity;
-import net.minecraft.client.gui.screen.ingame.HangingSignEditScreen;
-import net.minecraft.client.gui.screen.ingame.SignEditScreen;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.packet.c2s.play.UpdateSignC2SPacket;
+import net.minecraft.client.gui.screens.inventory.AbstractSignEditScreen;
+import net.minecraft.network.protocol.game.ServerboundSignUpdatePacket;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import powie.powhax.Powhax;
 
 public class AutoEndorse extends Module {
@@ -85,8 +84,8 @@ public class AutoEndorse extends Module {
 
     @EventHandler
     private void onOpenScreen(OpenScreenEvent event) {
-        if (mc.player == null || mc.world == null) return;
-        if (!(event.screen instanceof SignEditScreen) && !(event.screen instanceof HangingSignEditScreen)) return;
+        // if (mc.player == null || mc.world == null) return; // assuming that this will never happen
+        if (!(event.screen instanceof AbstractSignEditScreen)) return;
 
         Entity target = getTarget(targetRange.get(), targetPriority.get());
         if (target == null) {
@@ -98,8 +97,8 @@ public class AutoEndorse extends Module {
 
         String[] lines = composeLines(target.getName().getString());
 
-        mc.player.networkHandler.sendPacket(new UpdateSignC2SPacket(
-            sign.getPos(),
+        mc.player.connection.send(new ServerboundSignUpdatePacket(
+            sign.getBlockPos(),
             true,
             lines[0],
             lines[1],
@@ -128,14 +127,14 @@ public class AutoEndorse extends Module {
         return lines;
     }
 
-    private PlayerEntity getTarget(double range, SortPriority priority) {
+    private Player getTarget(double range, SortPriority priority) {
         if (!Utils.canUpdate()) return null;
-        return (PlayerEntity) TargetUtils.get(entity -> {
-            if (!(entity instanceof PlayerEntity) || entity == mc.player) return false;
-            if (((PlayerEntity) entity).isDead() || ((PlayerEntity) entity).getHealth() <= 0) return false;
+        return (Player) TargetUtils.get(entity -> {
+            if (!(entity instanceof Player) || entity == mc.player) return false;
+            if (((Player) entity).isDeadOrDying() || ((Player) entity).getHealth() <= 0) return false;
             if (!PlayerUtils.isWithin(entity, range)) return false;
-            if (targets.get() == Target.Friends && !Friends.get().isFriend((PlayerEntity) entity)) return false;
-            if (targets.get() == Target.NonFriends && Friends.get().isFriend((PlayerEntity) entity)) return false;
+            if (targets.get() == Target.Friends && !Friends.get().isFriend((Player) entity)) return false;
+            if (targets.get() == Target.NonFriends && Friends.get().isFriend((Player) entity)) return false;
             return entity instanceof FakePlayerEntity;
         }, priority);
     }

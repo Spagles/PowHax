@@ -50,8 +50,9 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 
 These older versions are no longer supported.
 
-| Version | Minecraft<br> version | Release<br>Page                                                                                                                                                |
-|---------|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Version | Minecraft<br> version | Release<br>Page                                                                                                                                                 |
+|---------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1.6.7   | `1.21.11`             | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.7"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
 | 1.6.5   | `1.21.8`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.5"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
 | 1.6.3   | `1.21.7`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.3"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
 | 1.6.2   | `1.21.6`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.2"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |

@@ -18,6 +18,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Util;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
+import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
 import powie.powhax.Powhax;
 
 import java.io.*;
@@ -35,10 +36,12 @@ public class BedrockPrinter extends Module {
         .build());
 
     private final Setting<String> savePath = sgDefault.add(new StringSetting.Builder()
-        .name("path")
-        .description("The path to write the positions in")
-        .defaultValue("D:/br.txt")
-        .build());
+            .name("path")
+            .description("The path of the file to write the positions in")
+            .defaultValue("D:/br.txt")
+//        .onChanged(s -> validateFile(new File(s)))
+            .build()
+    );
 
     public static ExecutorService executor = Executors.newSingleThreadExecutor();
 
@@ -51,7 +54,7 @@ public class BedrockPrinter extends Module {
     @Override
     public WWidget getWidget(GuiTheme theme) {
         WVerticalList l = theme.verticalList();
-        l.add(theme.label("this module is meant to be used for Nether Bedrock Cracker"));
+        l.add(theme.label("This module is meant to be used for Nether Bedrock Cracker"));
         l.add(theme.label("https://github.com/19MisterX98/Nether_Bedrock_Cracker/"));
         WButton button = l.add(theme.button("open github repo")).widget();
         button.action = () -> Util.getPlatform().openUri("https://github.com/19MisterX98/Nether_Bedrock_Cracker/");
@@ -73,23 +76,31 @@ public class BedrockPrinter extends Module {
     }
 
     @Override
+    public void onActivate() {
+        if (isInvalidFile(new File(savePath.get()))) {
+            toggle();
+            return;
+        }
+        if (!mc.level.dimensionTypeRegistration().is(BuiltinDimensionTypes.NETHER))
+            warning("This module is only meant to be used in the nether");
+    }
+
+    @Override
     public void onDeactivate() {
         BufferedWriter bw = null;
         try {
             File f = new File(savePath.get());
-            if (f.exists() && f.canWrite()) {
-                bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
-                for (BlockPos pos : bedrockPos) {
-                    String s = pos.getX() + " " + pos.getY() + " " + pos.getZ() + " Bedrock";
-                    bw.write(s);
-                    bw.newLine();
-                }
-                bw.flush();
-                bw.close();
-                info("Great success!");
-            } else {
-                info("File not found");
+            if (isInvalidFile(f)) return;
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
+            for (BlockPos pos : bedrockPos) {
+                String s = pos.getX() + " " + pos.getY() + " " + pos.getZ() + " Bedrock";
+                bw.write(s);
+                bw.newLine();
             }
+            bw.flush();
+            bw.close();
+            info("Done writing to file");
+
         } catch (Exception e) {
             info(e.getMessage());
         } finally {
@@ -102,6 +113,22 @@ public class BedrockPrinter extends Module {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    private boolean isInvalidFile(File file) {
+        if (!file.exists()) {
+            error("File does not exist");
+            return true;
+        }
+        if (!file.isFile()) {
+            error("The specified path is a directory, not a file");
+            return true;
+        }
+        if (!file.canWrite()) {
+            error("File is not writable");
+            return true;
+        }
+        return false;
     }
 
     public enum yLevel {

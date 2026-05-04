@@ -36,11 +36,11 @@ public class BedrockPrinter extends Module {
         .build());
 
     private final Setting<String> savePath = sgDefault.add(new StringSetting.Builder()
-            .name("path")
-            .description("The path of the file to write the positions in")
-            .defaultValue("D:/br.txt")
-//        .onChanged(s -> validateFile(new File(s)))
-            .build()
+        .name("path")
+        .description("The path of the file to write the positions in")
+        .defaultValue("D:/br.txt")
+        // .onChanged(s -> validateFile(new File(s)))
+        .build()
     );
 
     public static ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -68,8 +68,7 @@ public class BedrockPrinter extends Module {
             for (int x = c.getPos().getMinBlockX(); x <= c.getPos().getMaxBlockX(); x++) {
                 for (int z = c.getPos().getMinBlockZ(); z <= c.getPos().getMaxBlockZ(); z++) {
                     BlockPos sPos = new BlockPos(x, searchY.get().getValue(), z);
-                    if (!c.getBlockState(sPos).getBlock().equals(Blocks.BEDROCK)) return;
-                    bedrockPos.add(sPos);
+                    if (c.getBlockState(sPos).getBlock().equals(Blocks.BEDROCK)) bedrockPos.add(sPos);
                 }
             }
         });
@@ -138,12 +137,11 @@ public class BedrockPrinter extends Module {
         private final int value;
 
         yLevel(int value) {
-            this.value = value; //wtf is this?????
+            this.value = value;
         }
 
         public int getValue() {
             return value;
         }
     }
-    // skidded from gpt
 }

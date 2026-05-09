@@ -1,5 +1,4 @@
 {
-  "description": "meteor addon that's made for servers with plugins like mcmmo, essentialsX, and many other",
   "tags": [
     "Utility",
     "QoL"
@@ -13,5 +12,9 @@
     "1.21.5"
   ],
   "icon": "https://raw.githubusercontent.com/Powie69/PowHax/refs/heads/master/src/main/resources/assets/template/icon.webp",
-  "homepage": "https://github.com/Powie69/PowHax"
+  "homepage": "https://github.com/Powie69/PowHax",
+  "feature_directories": {
+    "commands": ["commands"],
+    "modules": ["modules"]
+  }
 }

@@ -1,20 +1,17 @@
 package powie.powhax;
 
 import com.mojang.logging.LogUtils;
-import meteordevelopment.meteorclient.MeteorClient;
 import meteordevelopment.meteorclient.addons.GithubRepo;
 import meteordevelopment.meteorclient.addons.MeteorAddon;
 import meteordevelopment.meteorclient.commands.Commands;
 import meteordevelopment.meteorclient.systems.modules.Category;
 import meteordevelopment.meteorclient.systems.modules.Modules;
-import net.fabricmc.loader.api.metadata.CustomValue;
+import net.fabricmc.loader.api.FabricLoader;
 import org.slf4j.Logger;
 import powie.powhax.commands.ClearChat;
 import powie.powhax.commands.Coords;
 import powie.powhax.commands.Xp;
 import powie.powhax.modules.*;
-
-import static meteordevelopment.meteorclient.MeteorClient.MOD_META;
 
 public class Powhax extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
@@ -30,7 +27,6 @@ public class Powhax extends MeteorAddon {
         Modules.get().add(new AutoEndorse());
         Modules.get().add(new AutoLogin());
         Modules.get().add(new AutoSell());
-        Modules.get().add(new BedrockPrinter());
         Modules.get().add(new BedrockPrinter());
         Modules.get().add(new BlazeFarm());
         Modules.get().add(new DeathCommands());
@@ -69,8 +65,12 @@ public class Powhax extends MeteorAddon {
 
     @Override
     public String getCommit() {
-        CustomValue commit = MOD_META.getCustomValue(MeteorClient.MOD_ID + ":commit");
-        String commitStr = commit == null ? "" : commit.getAsString();
-        return commitStr.isEmpty() ? null : commitStr;
+        String commit = FabricLoader
+            .getInstance()
+            .getModContainer("powhax")
+            .get().getMetadata()
+            .getCustomValue(":commit")
+            .getAsString();
+        return commit.isEmpty() ? null : commit;
     }
 }

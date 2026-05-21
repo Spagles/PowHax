@@ -83,7 +83,7 @@ public class BlazeFarm extends Module {
 
     private final Setting<Integer> sellDelay = sgGeneral.add(new IntSetting.Builder()
         .name("sell-delay-interval")
-        .description("the delay before selling the blaze rods in minecraft ticks")
+        .description("the delay before selling the blaze rods in Minecraft ticks")
         .defaultValue(1200)
         .min(1)
         .sliderMin(1)
@@ -108,7 +108,7 @@ public class BlazeFarm extends Module {
 
     private final Setting<Integer> autoFixDelay = sgGeneral.add(new IntSetting.Builder()
         .name("autoFix-Delay")
-        .description("the delay before fixing the weapon in minecraft ticks")
+        .description("the delay before fixing the weapon in Minecraft ticks")
         .defaultValue(5)
         .visible(autoFix::get)
         .min(1)

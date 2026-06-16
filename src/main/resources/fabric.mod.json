@@ -24,6 +24,7 @@
     "powhax.mixins.json"
   ],
   "custom": {
+    "powhax:commit": "${commit}",
     "meteor-client:color": "225,155,0",
     "modmenu": {
       "issues": "https://github.com/Powie69/PowHax/issues",

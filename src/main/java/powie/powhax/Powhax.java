@@ -28,7 +28,7 @@ public class Powhax extends MeteorAddon {
         Modules.get().add(new AutoEndorse());
         Modules.get().add(new AutoLogin());
         Modules.get().add(new AutoSell());
-        Modules.get().add(new BedrockPrinter());
+        Modules.get().add(new BedrockSeedfinder());
         Modules.get().add(new BlazeFarm());
         Modules.get().add(new DeathCommands());
         Modules.get().add(new FlySpeed());
@@ -70,7 +70,7 @@ public class Powhax extends MeteorAddon {
             .getInstance()
             .getModContainer("powhax")
             .get().getMetadata()
-            .getCustomValue(":commit")
+            .getCustomValue("powhax:commit")
             .getAsString();
         return commit.isEmpty() ? null : commit;
     }

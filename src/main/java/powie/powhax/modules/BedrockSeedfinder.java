@@ -5,7 +5,10 @@ package powie.powhax.modules;
 
 import meteordevelopment.meteorclient.events.world.ChunkDataEvent;
 import meteordevelopment.meteorclient.gui.GuiTheme;
+import meteordevelopment.meteorclient.gui.renderer.GuiRenderer;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
+import meteordevelopment.meteorclient.gui.widgets.containers.WHorizontalList;
+import meteordevelopment.meteorclient.gui.widgets.containers.WSection;
 import meteordevelopment.meteorclient.gui.widgets.containers.WVerticalList;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
 import meteordevelopment.meteorclient.settings.EnumSetting;
@@ -19,6 +22,7 @@ import net.minecraft.util.Util;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.chunk.ChunkAccess;
 import net.minecraft.world.level.dimension.BuiltinDimensionTypes;
+import org.lwjgl.util.tinyfd.TinyFileDialogs;
 import powie.powhax.Powhax;
 
 import java.io.*;
@@ -26,10 +30,10 @@ import java.util.LinkedHashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class BedrockPrinter extends Module {
+public class BedrockSeedfinder extends Module {
     SettingGroup sgDefault = settings.getDefaultGroup();
 
-    private final Setting<yLevel> searchY = sgDefault.add(new EnumSetting.Builder<BedrockPrinter.yLevel>()
+    private final Setting<yLevel> searchY = sgDefault.add(new EnumSetting.Builder<BedrockSeedfinder.yLevel>()
         .name("y-level")
         .description("get the bedrock from floor or ceiling?")
         .defaultValue(yLevel.Floor)
@@ -43,10 +47,11 @@ public class BedrockPrinter extends Module {
         .build()
     );
 
-    public static ExecutorService executor = Executors.newSingleThreadExecutor();
+    private static ExecutorService executor = Executors.newSingleThreadExecutor();
+//    private static File saveFile = new File("D:/br.txt");
 
-    public BedrockPrinter() {
-        super(Powhax.CATEGORY, "bedrock-printer", "Prints the position of bedrock");
+    public BedrockSeedfinder() {
+        super(Powhax.CATEGORY, "bedrock-seedfinder", "Writes the position of bedrock in the nether in a file. meant for seed cracking.");
     }
 
     LinkedHashSet<BlockPos> bedrockPos = new LinkedHashSet<>();
@@ -54,6 +59,25 @@ public class BedrockPrinter extends Module {
     @Override
     public WWidget getWidget(GuiTheme theme) {
         WVerticalList l = theme.verticalList();
+//        l.add(theme.label("Save File path: " + saveFile.getPath()));
+//
+//        WHorizontalList horizontalList = l.add(theme.horizontalList()).widget();
+//
+//        WButton changeBtn = horizontalList.add(theme.button("Change save file")).widget();
+//        WButton resetBtn = horizontalList.add(theme.confirmedButton(GuiRenderer.RESET)).right().widget();
+//
+//        resetBtn.action = () -> {
+//            saveFile = new File("D:/br.txt");
+//        };
+//
+//        changeBtn.action = () -> {
+//            String file = TinyFileDialogs.tinyfd_openFileDialog("Select profile to import", null, null, null, false);
+//            if (file == null) return;
+//            saveFile = new File(file);
+//        };
+//
+//        WSection infoSection = l.add(theme.section()).widget();
+
         l.add(theme.label("This module is meant to be used for Nether Bedrock Cracker"));
         l.add(theme.label("https://github.com/19MisterX98/Nether_Bedrock_Cracker/"));
         WButton button = l.add(theme.button("open github repo")).widget();

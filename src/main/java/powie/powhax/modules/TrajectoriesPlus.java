@@ -153,7 +153,7 @@ public class TrajectoriesPlus extends Module {
     private static final double MULTISHOT_OFFSET = Math.toRadians(10); // accurate-ish offset of crossbow multishot in radians (10° degrees)
 
     public TrajectoriesPlus() {
-        super(Powhax.CATEGORY, "Trajectories+", "Better trajectories");
+        super(Powhax.CATEGORY, "Trajectories+", "Predicts the trajectory of throwable items.\nSelect which fired entities to track");
     }
 
     private boolean itemFilter(Item item) {

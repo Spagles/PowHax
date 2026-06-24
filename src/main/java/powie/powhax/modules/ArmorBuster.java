@@ -54,7 +54,6 @@ public class ArmorBuster extends Module {
         .build()
     );
 
-
     private final Setting<RotationMode> rotation = sgGeneral.add(new EnumSetting.Builder<RotationMode>()
         .name("rotate")
         .description("Determines when you should rotate towards the target.")

@@ -223,7 +223,7 @@ public class SmiteAura extends Module {
 
     private boolean entityCheck(Entity entity) {
         if (entity.equals(mc.player) || entity.equals(mc.getCameraEntity())) return false;
-        if ((entity instanceof LivingEntity livingEntity && livingEntity.isDeadOrDying()) || !entity.isAlive())
+        if ((entity instanceof LivingEntity livingEntity && livingEntity.isDeadOrDying()) || !entity.isAlive() || !entity.onGround())
             return false;
 
         AABB hitbox = entity.getBoundingBox();
@@ -237,7 +237,6 @@ public class SmiteAura extends Module {
         if (!entities.get().contains(entity.getType())) return false;
         if (!canSeeEntityFeet(entity)) return false;
         if (ignoreNamed.get() && entity.hasCustomName()) return false;
-        if (!entity.onGround()) return false;
         if (ignoreTamed.get()) {
             if (entity instanceof OwnableEntity tameable
                 && tameable.getOwner() != null

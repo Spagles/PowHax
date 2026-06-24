@@ -10,10 +10,7 @@ import meteordevelopment.meteorclient.utils.player.ChatUtils;
 import meteordevelopment.orbit.EventHandler;
 import powie.powhax.Powhax;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import java.util.*;
 
 public class DeathCommands extends Module {
     private final SettingGroup sgGeneral = this.settings.getDefaultGroup();
@@ -21,7 +18,7 @@ public class DeathCommands extends Module {
     private final Setting<Boolean> SupportStarscript = sgGeneral.add(new BoolSetting.Builder()
         .name("Support Starscript")
         .description("Makes Starscript work with death commands")
-        .defaultValue(true)
+        .defaultValue(false)
         .build()
     );
 
@@ -77,11 +74,24 @@ public class DeathCommands extends Module {
         super(Powhax.CATEGORY, "death-commands", "Run commands when you die.");
     }
 
+    private final Queue<String> commandQueue = new ArrayDeque<>();
+
     boolean firstCommand = true;
-    boolean running = false;
-    int startDelay = 0;
-    int intervalDelay = 0;
-    private Queue<String> commandQueue = new LinkedList<>();
+    boolean running;
+    int startDelay, intervalDelay;
+
+    @Override
+    public void onActivate() {
+        if (SupportStarscript.get() && commandsStarscript.get().isEmpty()) {
+            error("Theres no commands to run.");
+            toggle();
+            return;
+        }
+        if (!SupportStarscript.get() && commands.get().isEmpty()) {
+            error("Theres no commands to run.");
+            toggle();
+        }
+    }
 
     @EventHandler
     private void onReceivePacket(PacketEvent.Receive event) {
@@ -95,7 +105,7 @@ public class DeathCommands extends Module {
             commandQueue.addAll(commands.get());
         }
         if (commandQueue.isEmpty()) {
-            error("Theres no commands to run, idiot.");
+            error("Theres no commands to run.");
             toggle();
             return;
         }

@@ -6,6 +6,7 @@ import meteordevelopment.meteorclient.mixininterface.IVec3;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.friends.Friends;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.Utils;
 import meteordevelopment.meteorclient.utils.entity.EntityUtils;
 import meteordevelopment.meteorclient.utils.entity.SortPriority;
 import meteordevelopment.meteorclient.utils.entity.Target;
@@ -87,24 +88,23 @@ public class SmiteAura extends Module {
         .build()
     );
 
-//    private final Setting<Boolean> pauseOnMove = sgGeneral.add(new BoolSetting.Builder()
-//        .name("pause-on-move")
-//        .description("Does not smite while moving.")
-//        .defaultValue(false)
-//        .build()
-//    );
-//
-//    private final Setting<Double> pauseOnMoveSpeedThreshold = sgGeneral.add(new DoubleSetting.Builder()
-//        .name("pause-on-move-speed-threshold")
-//        .description("If the value is higher than the player's speed, it will not smite.")
-//        .defaultValue(2)
-//        .min(0)
-//        .sliderMin(0)
-//        .sliderMax(40)
-//        .max(40)
-//        .visible(pauseOnMove::get)
-//        .build()
-//    );
+    private final Setting<Boolean> pauseOnMove = sgGeneral.add(new BoolSetting.Builder()
+        .name("pause-on-move")
+        .description("Will not smite while moving.")
+        .defaultValue(false)
+        .build()
+    );
+
+    private final Setting<Double> pauseOnMoveSpeedThreshold = sgGeneral.add(new DoubleSetting.Builder()
+        .name("pause-on-move-speed-threshold")
+        .description("If this value is higher than the player's speed, it won't smite.")
+        .defaultValue(2)
+        .min(0)
+        .sliderMin(0)
+        .sliderMax(40)
+        .visible(pauseOnMove::get)
+        .build()
+    );
 
     // Targeting
 
@@ -186,7 +186,7 @@ public class SmiteAura extends Module {
         if (!mc.player.isAlive() || PlayerUtils.getGameMode() == GameType.SPECTATOR) return;
         if (pauseOnUse.get() && mc.player.isUsingItem()) return;
         if (pauseOnBreakingBlock.get() && mc.gameMode.isDestroying()) return;
-//        if (pauseOnMove.get() && mc.player.speed >= pauseOnMoveSpeedThreshold.get()) return;
+        if (pauseOnMove.get() && Utils.getPlayerSpeed().horizontalDistance() >= pauseOnMoveSpeedThreshold.get()) return;
         if (TickRate.INSTANCE.getTimeSinceLastTick() >= 1f && pauseOnLag.get()) return;
 
         targets.clear();
@@ -210,6 +210,7 @@ public class SmiteAura extends Module {
     @EventHandler
     private void onRender(Render3DEvent event) {
         if (target == null) return;
+        if (pauseOnMove.get() && Utils.getPlayerSpeed().horizontalDistance() >= pauseOnMoveSpeedThreshold.get()) return;
         Rotations.rotate(Rotations.getYaw(target), Rotations.getPitch(target, Target.Feet));
     }
 

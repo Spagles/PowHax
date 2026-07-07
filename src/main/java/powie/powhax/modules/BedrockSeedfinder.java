@@ -1,20 +1,16 @@
-// skidded from
-// https://github.com/19MisterX98/Nether_Bedrock_Cracker/issues/24
-
 package powie.powhax.modules;
 
 import meteordevelopment.meteorclient.events.world.ChunkDataEvent;
 import meteordevelopment.meteorclient.gui.GuiTheme;
 import meteordevelopment.meteorclient.gui.renderer.GuiRenderer;
+import meteordevelopment.meteorclient.gui.widgets.WLabel;
 import meteordevelopment.meteorclient.gui.widgets.WWidget;
 import meteordevelopment.meteorclient.gui.widgets.containers.WHorizontalList;
-import meteordevelopment.meteorclient.gui.widgets.containers.WSection;
 import meteordevelopment.meteorclient.gui.widgets.containers.WVerticalList;
 import meteordevelopment.meteorclient.gui.widgets.pressable.WButton;
 import meteordevelopment.meteorclient.settings.EnumSetting;
 import meteordevelopment.meteorclient.settings.Setting;
 import meteordevelopment.meteorclient.settings.SettingGroup;
-import meteordevelopment.meteorclient.settings.StringSetting;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.core.BlockPos;
@@ -26,7 +22,6 @@ import org.lwjgl.util.tinyfd.TinyFileDialogs;
 import powie.powhax.Powhax;
 
 import java.io.*;
-import java.util.LinkedHashSet;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -39,44 +34,52 @@ public class BedrockSeedfinder extends Module {
         .defaultValue(yLevel.Floor)
         .build());
 
-    private final Setting<String> savePath = sgDefault.add(new StringSetting.Builder()
-        .name("path")
-        .description("The path of the file to write the positions in")
-        .defaultValue("D:/br.txt")
-        // .onChanged(s -> validateFile(new File(s)))
-        .build()
-    );
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
-    private static ExecutorService executor = Executors.newSingleThreadExecutor();
-//    private static File saveFile = new File("D:/br.txt");
+    private static File saveFile = new File("D:/br.txt");
+    private BufferedWriter writer;
 
+    /**
+     * Thanks to <a href="https://github.com/Nippaku-Zanmu/">Nippaku Zanmu</a> for initial code snippet
+     */
     public BedrockSeedfinder() {
-        super(Powhax.CATEGORY, "bedrock-seedfinder", "Writes the position of bedrock in the nether in a file. meant for seed cracking.");
+        super(Powhax.CATEGORY,
+            "bedrock-seedfinder",
+            "Writes the position of bedrock in the nether in a file. meant for seed cracking.",
+            "Seedcracker");
     }
 
-    LinkedHashSet<BlockPos> bedrockPos = new LinkedHashSet<>();
 
     @Override
     public WWidget getWidget(GuiTheme theme) {
         WVerticalList l = theme.verticalList();
-//        l.add(theme.label("Save File path: " + saveFile.getPath()));
-//
-//        WHorizontalList horizontalList = l.add(theme.horizontalList()).widget();
-//
-//        WButton changeBtn = horizontalList.add(theme.button("Change save file")).widget();
-//        WButton resetBtn = horizontalList.add(theme.confirmedButton(GuiRenderer.RESET)).right().widget();
-//
-//        resetBtn.action = () -> {
-//            saveFile = new File("D:/br.txt");
-//        };
-//
-//        changeBtn.action = () -> {
-//            String file = TinyFileDialogs.tinyfd_openFileDialog("Select profile to import", null, null, null, false);
-//            if (file == null) return;
-//            saveFile = new File(file);
-//        };
-//
-//        WSection infoSection = l.add(theme.section()).widget();
+
+        WLabel pathLabel = l.add(theme.label(getFilePath())).widget();
+
+        WHorizontalList horizontalList = l.add(theme.horizontalList()).widget();
+
+        WButton changeBtn = horizontalList.add(theme.button("Change save file")).widget();
+        WButton resetBtn = horizontalList.add(theme.confirmedButton(GuiRenderer.RESET)).right().widget();
+
+        resetBtn.action = () -> {
+            saveFile = new File("D:/br.txt");
+            pathLabel.set(getFilePath());
+        };
+
+        changeBtn.action = () -> {
+            String file = TinyFileDialogs.tinyfd_openFileDialog(
+                "Select profile to import",
+                null,
+                null,
+                null,
+                false
+            );
+            if (file == null) return;
+            saveFile = new File(file);
+            pathLabel.set(getFilePath());
+        };
+
+        l.add(theme.horizontalSeparator()).expandX();
 
         l.add(theme.label("This module is meant to be used for Nether Bedrock Cracker"));
         l.add(theme.label("https://github.com/19MisterX98/Nether_Bedrock_Cracker/"));
@@ -87,12 +90,20 @@ public class BedrockSeedfinder extends Module {
 
     @EventHandler
     private void onChunkData(ChunkDataEvent event) {
+        // implementation note is only a suggestion right?
         executor.execute(() -> {
             ChunkAccess c = event.chunk();
             for (int x = c.getPos().getMinBlockX(); x <= c.getPos().getMaxBlockX(); x++) {
                 for (int z = c.getPos().getMinBlockZ(); z <= c.getPos().getMaxBlockZ(); z++) {
                     BlockPos sPos = new BlockPos(x, searchY.get().getValue(), z);
-                    if (c.getBlockState(sPos).getBlock().equals(Blocks.BEDROCK)) bedrockPos.add(sPos);
+                    if (!c.getBlockState(sPos).getBlock().equals(Blocks.BEDROCK)) continue;
+                    try {
+                        String s = sPos.getX() + " " + sPos.getY() + " " + sPos.getZ() + " Bedrock";
+                        writer.write(s);
+                        writer.newLine();
+                    } catch (IOException e) {
+                        info(e.getMessage());
+                    }
                 }
             }
         });
@@ -100,41 +111,30 @@ public class BedrockSeedfinder extends Module {
 
     @Override
     public void onActivate() {
-        if (isInvalidFile(new File(savePath.get()))) {
+        if (isInvalidFile(saveFile)) {
             toggle();
             return;
         }
         if (!mc.level.dimensionTypeRegistration().is(BuiltinDimensionTypes.NETHER))
             warning("This module is only meant to be used in the nether");
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(saveFile)));
+        } catch (FileNotFoundException e) {
+            error("Failed to open file for writing: " + e.getMessage());
+            toggle();
+        }
     }
 
     @Override
     public void onDeactivate() {
-        BufferedWriter bw = null;
         try {
-            File f = new File(savePath.get());
-            if (isInvalidFile(f)) return;
-            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(f)));
-            for (BlockPos pos : bedrockPos) {
-                String s = pos.getX() + " " + pos.getY() + " " + pos.getZ() + " Bedrock";
-                bw.write(s);
-                bw.newLine();
+            if (writer != null) {
+                writer.flush();
+                writer.close();
+                info("Done writing to file");
             }
-            bw.flush();
-            bw.close();
-            info("Done writing to file");
-
-        } catch (Exception e) {
+        } catch (IOException e) {
             info(e.getMessage());
-        } finally {
-            bedrockPos.clear();
-            try {
-                if (bw != null) {
-                    bw.close();
-                }
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
         }
     }
 
@@ -152,6 +152,10 @@ public class BedrockSeedfinder extends Module {
             return true;
         }
         return false;
+    }
+
+    private String getFilePath() {
+        return "Save File path: " + saveFile.getPath();
     }
 
     public enum yLevel {

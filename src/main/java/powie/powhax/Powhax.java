@@ -24,6 +24,7 @@ public class Powhax extends MeteorAddon {
 
         // Modules
         Modules.get().add(new AntiBedTrap());
+        Modules.get().add(new AntiTrample());
         Modules.get().add(new ArmorBuster());
         Modules.get().add(new AutoEndorse());
         Modules.get().add(new AutoLogin());

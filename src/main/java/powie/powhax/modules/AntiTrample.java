@@ -18,7 +18,7 @@ public class AntiTrample extends Module {
         super(Powhax.CATEGORY,
             "anti-trample",
             "Prevents you from trampling farmland",
-            "farmland-protect");
+            "farmland protect");
     }
 
     @EventHandler

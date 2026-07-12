@@ -1,20 +1,37 @@
 package powie.powhax.modules;
 
-import meteordevelopment.meteorclient.events.game.ItemStackTooltipEvent;
+import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.Utils;
+import meteordevelopment.meteorclient.utils.misc.text.RunnableClickEvent;
 import meteordevelopment.orbit.EventHandler;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.inventory.MenuType;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TooltipFlag;
 import powie.powhax.Powhax;
+import powie.powhax.utils.Config;
 
-import java.util.HashMap;
+import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static powie.powhax.Powhax.LOG;
+
 public class PriceScraper extends Module {
-    private static final  Pattern pricePattern = Pattern.compile("(Sell|Buy): (\\d+\\.\\d+)");
-    private final Map<String, itemForSale> items = new HashMap<>();
+    private static final Pattern pricePattern = Pattern.compile("(Sell|Buy): (\\d+\\.\\d+)");
+    private final Map<String, ItemForSale> itemsForSale = new TreeMap<>();
 
     public PriceScraper() {
         super(Powhax.CATEGORY, "price-scraper", "An example module that highlights the center of the world.");
@@ -22,65 +39,73 @@ public class PriceScraper extends Module {
 
     @Override
     public void onDeactivate() {
-        StringBuilder json = new StringBuilder("{");
-        boolean first = true;
-        for (Map.Entry<String, itemForSale> entry : items.entrySet()) {
-            if (!first) json.append(",");
-            json.append("\"").append(entry.getKey()).append("\":");
-            json.append("{\"sellPrice\":").append(entry.getValue().sellPrice);
-            json.append(",\"buyPrice\":").append(entry.getValue().buyPrice).append("}");
-            first = false;
-        }
-        json.append("}");
-        info(json.toString());
-        items.clear();
+        Path filePath = Config.writeNewShopData(itemsForSale);
+        MutableComponent message = Component.literal("Saved shop data to: ");
+        message.append(Component.literal(filePath.getFileName().toString())
+            .withStyle(style -> style
+                .applyFormat(ChatFormatting.YELLOW)
+                .withClickEvent(new RunnableClickEvent(() -> {
+                    try {
+                        Desktop.getDesktop().open(filePath.getParent().toFile());
+                    } catch (IOException e) {
+                        LOG.error("Failed to open shop data folder", e);
+                    }
+                }))
+            )
+        );
+        itemsForSale.clear();
     }
 
     @EventHandler
-    private void onItemStackTooltip(ItemStackTooltipEvent event) {
-        List<Component> itemTooltips = event.list();
+    private void onTickPost(TickEvent.Post event) {
+        if (!Utils.canUpdate()
+            || !(mc.screen instanceof AbstractContainerScreen<?> screen)
+            || screen.getMenu().getType() != MenuType.GENERIC_9x6)
+            return;
 
-        boolean hasSell = false;
-        boolean hasBuy = false;
-        float sellPrice = 0;
-        float buyPrice = 0;
+        AbstractContainerMenu menu = screen.getMenu();
 
-        for (Component component : itemTooltips) {
-            String text = component.getString();
-            Matcher matcher = pricePattern.matcher(text);
-            if (matcher.find()) {
-                String type = matcher.group(1);
+        // barrier is slot 45
+        if (menu.getSlot(45).getItem().getItem() != Items.BARRIER) return;
+
+        for (int i = 0; i < 45; i++) {
+            ItemStack stack = menu.getSlot(i).getItem();
+            if (stack.isEmpty()) continue;
+
+            String itemName = stack.getItem().toString().substring(10);
+            if (itemsForSale.containsKey(itemName)) continue; // skip if already scraped
+
+            List<Component> tooltip = stack.getTooltipLines(
+                Item.TooltipContext.of(mc.level),
+                mc.player,
+                TooltipFlag.Default.NORMAL
+            );
+
+            Float sellPrice = null, buyPrice = null;
+
+            for (Component component : tooltip) {
+                Matcher matcher = pricePattern.matcher(component.getString());
+                if (!matcher.find()) continue;
+
                 float price = Float.parseFloat(matcher.group(2));
-                if (type.equals("Sell")) {
-                    hasSell = true;
+                if (matcher.group(1).equals("Sell")) {
                     sellPrice = price;
-                } else if (type.equals("Buy")) {
-                    hasBuy = true;
+                } else {
                     buyPrice = price;
                 }
             }
+
+            if (sellPrice == null && buyPrice == null) continue;
+
+            itemsForSale.put(itemName, new ItemForSale(
+                sellPrice == null ? 0 : sellPrice,
+                buyPrice == null ? 0 : buyPrice
+            ));
+
+            info("got " + itemName + ", B: " + buyPrice + ", S: " + sellPrice);
         }
-
-        if (!hasSell && !hasBuy) return;
-
-        String itemName = event.itemStack().getItem().toString();
-
-
-        if (items.containsKey(itemName)) return;
-
-        items.put(itemName, new itemForSale(sellPrice, buyPrice));
-
-        info("got " + itemName + ", B: " + buyPrice + ", S: " + sellPrice);
     }
 
-
-    private class itemForSale {
-        float sellPrice;
-        float buyPrice;
-
-        public itemForSale(float sellPrice, float buyPrice) {
-            this.sellPrice = sellPrice;
-            this.buyPrice = buyPrice;
-        }
+    public record ItemForSale(float sellPrice, float buyPrice) {
     }
 }

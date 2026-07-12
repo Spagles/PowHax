@@ -13,6 +13,8 @@ import powie.powhax.commands.Coords;
 import powie.powhax.commands.Xp;
 import powie.powhax.modules.*;
 
+import static powie.powhax.utils.Config.initializeConfig;
+
 public class Powhax extends MeteorAddon {
     public static final Logger LOG = LogUtils.getLogger();
     public static final Category CATEGORY = new Category("PowHax");
@@ -21,6 +23,8 @@ public class Powhax extends MeteorAddon {
     @Override
     public void onInitialize() {
         LOG.info("Initializing PowHax");
+
+        initializeConfig();
 
         // Modules
         Modules.get().add(new AntiBedTrap());

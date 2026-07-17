@@ -3,10 +3,10 @@ package powie.powhax.modules;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.systems.modules.Module;
 import meteordevelopment.meteorclient.utils.Utils;
-import meteordevelopment.meteorclient.utils.misc.text.RunnableClickEvent;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.ClickEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -18,8 +18,6 @@ import net.minecraft.world.item.TooltipFlag;
 import powie.powhax.Powhax;
 import powie.powhax.utils.Config;
 
-import java.awt.*;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
@@ -27,14 +25,12 @@ import java.util.TreeMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static powie.powhax.Powhax.LOG;
-
 public class PriceScraper extends Module {
     private static final Pattern pricePattern = Pattern.compile("(Sell|Buy): (\\d+\\.\\d+)");
     private final Map<String, ItemForSale> itemsForSale = new TreeMap<>();
 
     public PriceScraper() {
-        super(Powhax.CATEGORY, "price-scraper", "An example module that highlights the center of the world.");
+        super(Powhax.CATEGORY, "price-scraper", "automatically scrapes the prices of items in dynamic shop");
     }
 
     @Override
@@ -44,15 +40,10 @@ public class PriceScraper extends Module {
         message.append(Component.literal(filePath.getFileName().toString())
             .withStyle(style -> style
                 .applyFormat(ChatFormatting.YELLOW)
-                .withClickEvent(new RunnableClickEvent(() -> {
-                    try {
-                        Desktop.getDesktop().open(filePath.getParent().toFile());
-                    } catch (IOException e) {
-                        LOG.error("Failed to open shop data folder", e);
-                    }
-                }))
+                .withClickEvent(new ClickEvent.OpenFile(filePath))
             )
         );
+        info(message);
         itemsForSale.clear();
     }
 

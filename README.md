@@ -17,6 +17,7 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 | Death Commands      | Run commands when you respawn. supports [StarScript](https://meteorclient.com/faq/starscript).                         |                                                                                                    |
 | Fly Speed           | Modifies your fly speed.                                                                                               | Anything that gives you the flight abilities like [`/fly` in essentialsX](https://essentialsx.net) |
 | Hand Derp           | Automatically switches between left and right main hand.                                                               |                                                                                                    |
+| Price Scraper       | automatically scrapes the prices of items in dynamic shop                                                              | [Dynamic shops](https://www.spigotmc.org/resources/discontinued-dynamicshop-3-1-16-5-1-21.65603/)  |
 | Smite Aura          | Automatically strikes lightning on specified entities around you.                                                      | [`/lightning` in essentialsX](https://essentialsx.net/)                                            |
 | Trajectories+       | Select which fired entities to track                                                                                   |                                                                                                    |
 

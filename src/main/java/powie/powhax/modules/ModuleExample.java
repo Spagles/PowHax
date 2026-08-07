@@ -61,6 +61,5 @@ public class ModuleExample extends Module {
         );
 
         // Render the marker based on the color setting
-        event.renderer.box(marker, color.get(), color.get(), ShapeMode.Both, 0);
     }
 }

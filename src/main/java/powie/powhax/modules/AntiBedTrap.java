@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BedBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RespawnAnchorBlock;
+import net.minecraft.world.phys.Vec3;
 import powie.powhax.Powhax;
 
 public class AntiBedTrap extends Module {
@@ -55,7 +56,7 @@ public class AntiBedTrap extends Module {
         if (block instanceof BedBlock) {
             if (allowExplosiveBypass.get() &&
                 mc.level.dimension() != Level.OVERWORLD &&
-                maxDamage.get() > DamageUtils.bedDamage(mc.player, event.result.getBlockPos().getCenter())) {
+                maxDamage.get() > DamageUtils.bedDamage(mc.player, Vec3.atCenterOf(event.result.getBlockPos()))) {
                 return;
             }
             event.cancel();
@@ -64,7 +65,7 @@ public class AntiBedTrap extends Module {
         if (block instanceof RespawnAnchorBlock) {
             if (allowExplosiveBypass.get() &&
                 mc.level.dimension() != Level.NETHER &&
-                maxDamage.get() > DamageUtils.anchorDamage(mc.player, event.result.getBlockPos().getCenter())) {
+                maxDamage.get() > DamageUtils.anchorDamage(mc.player, Vec3.atCenterOf(event.result.getBlockPos()))) {
                 return;
             }
             event.cancel();

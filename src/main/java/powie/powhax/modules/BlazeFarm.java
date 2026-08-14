@@ -15,6 +15,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.AxeItem;
 import net.minecraft.world.item.Items;
@@ -187,7 +188,7 @@ public class BlazeFarm extends Module {
             Mth.clamp(mc.player.getZ(), hitbox.minZ, hitbox.maxZ),
             range.get()
         )) return false;
-        if (entity.getType() != EntityType.BLAZE) return false;
+        if (entity.getType() != EntityTypes.BLAZE) return false;
         return PlayerUtils.canSeeEntity(entity) || PlayerUtils.isWithin(entity, wallsRange.get());
     }
 

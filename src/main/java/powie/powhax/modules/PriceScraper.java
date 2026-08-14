@@ -50,7 +50,7 @@ public class PriceScraper extends Module {
     @EventHandler
     private void onTickPost(TickEvent.Post event) {
         if (!Utils.canUpdate()
-            || !(mc.screen instanceof AbstractContainerScreen<?> screen)
+            || !(mc.gui.screen() instanceof AbstractContainerScreen<?> screen)
             || screen.getMenu().getType() != MenuType.GENERIC_9x6)
             return;
 

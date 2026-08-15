@@ -86,7 +86,7 @@ public class LavacastHelper extends Module {
     private boolean isFirstCorner = true;
 
     public LavacastHelper() {
-        super(Powhax.CATEGORY, "lavacast-helper", "Helping tools for making lavacast");
+        super(Powhax.CATEGORY, "lavacast-helper", "Calculates lavacast corners based on distance and target height");
     }
 
     @Override

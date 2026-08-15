@@ -17,6 +17,7 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 | Death Commands      | Run commands when you respawn. supports [StarScript](https://meteorclient.com/faq/starscript).                         |                                                                                                    |
 | Fly Speed           | Modifies your fly speed.                                                                                               | Anything that gives you the flight abilities like [`/fly` in essentialsX](https://essentialsx.net) |
 | Hand Derp           | Automatically switches between left and right main hand.                                                               |                                                                                                    |
+| Lavacast Helper     | Calculates lavacast corners based on distance and target height                                                        |                                                                                                    |
 | Price Scraper       | automatically scrapes the prices of items in dynamic shop                                                              | [Dynamic shops](https://www.spigotmc.org/resources/discontinued-dynamicshop-3-1-16-5-1-21.65603/)  |
 | Smite Aura          | Automatically strikes lightning on specified entities around you.                                                      | [`/lightning` in essentialsX](https://essentialsx.net/)                                            |
 | Trajectories+       | Select which fired entities to track                                                                                   |                                                                                                    |
@@ -52,13 +53,13 @@ this addon is focused on plugins like [Essentials](https://essentialsx.net/), [m
 
 These older versions are no longer supported.
 
-| Version | Minecraft<br> version | Release<br>Page                                                                                                                                                 |
-|---------|-----------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1.6.7   | `1.21.11`             | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.7"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
-| 1.6.5   | `1.21.8`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.5"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
-| 1.6.3   | `1.21.7`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.3"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
-| 1.6.2   | `1.21.6`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.2"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
-| 1.6.0   | `1.21.5`              | <a href="https://github.com/Powie69/PowHax/releases/tag/1.6.0"><img src="src/main/resources/assets/template/icon.png" alt="Click to download" width="40px"></a> |
+| Version                                                       | Minecraft<br> version |
+|---------------------------------------------------------------|-----------------------|
+| [1.6.7](https://github.com/Powie69/PowHax/releases/tag/1.6.7) | `1.21.11`             |
+| [1.6.5](https://github.com/Powie69/PowHax/releases/tag/1.6.5) | `1.21.8`              |
+| [1.6.3](https://github.com/Powie69/PowHax/releases/tag/1.6.3) | `1.21.7`              |
+| [1.6.2](https://github.com/Powie69/PowHax/releases/tag/1.6.2) | `1.21.6`              |
+| [1.6.0](https://github.com/Powie69/PowHax/releases/tag/1.6.0) | `1.21.5`              |
 
 <sub>*There are more older versions, but I only figured out how semantic versioning works after 1.6.0*</sub>
 </details>

@@ -17,10 +17,7 @@ import meteordevelopment.meteorclient.utils.player.Rotations;
 import meteordevelopment.meteorclient.utils.world.TickRate;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.OwnableEntity;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -112,7 +109,7 @@ public class SmiteAura extends Module {
         .name("entities")
         .description("Entities to attack.")
         .onlyAttackable()
-        .defaultValue(EntityType.PLAYER)
+        .defaultValue(EntityTypes.PLAYER)
         .build()
     );
 

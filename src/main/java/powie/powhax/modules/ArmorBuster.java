@@ -18,6 +18,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.AxeItem;
@@ -137,7 +138,7 @@ public class ArmorBuster extends Module {
             Mth.clamp(mc.player.getZ(), hitbox.minZ, hitbox.maxZ),
             range.get()
         )) return false;
-        if (entity.getType() != EntityType.PLAYER) return false;
+        if (entity.getType() != EntityTypes.PLAYER) return false;
         if (entity instanceof Player player) {
             if (player.isCreative()) return false;
             if (ignoreFriends.get() && !Friends.get().shouldAttack(player)) return false;

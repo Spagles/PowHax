@@ -115,11 +115,11 @@ public class LavacastHelper extends Module {
 
     @EventHandler
     private void onRender2d(Render2DEvent event) {
-        renderCornerLabels(corner1.get(), "1");
-        renderCornerLabels(corner2.get(), "2");
-        renderCornerLabels(corner3.get(), "3");
-        renderCornerLabels(corner4.get(), "4");
-        if (shouldRender5thPoint) renderCornerLabels(corner5, "5");
+        renderCornerLabels(event, corner1.get(), "1");
+        renderCornerLabels(event, corner2.get(), "2");
+        renderCornerLabels(event, corner3.get(), "3");
+        renderCornerLabels(event, corner4.get(), "4");
+        if (shouldRender5thPoint) renderCornerLabels(event, corner5, "5");
     }
 
     @EventHandler
@@ -151,7 +151,7 @@ public class LavacastHelper extends Module {
     private void startQuickSelecting() {
         info("Select first corner");
         isQuickSelecting = true;
-        mc.setScreen(null);
+        mc.gui.setScreen(null);
     }
 
     // calc is short for calculator btw im just using slang
@@ -230,11 +230,11 @@ public class LavacastHelper extends Module {
         return dx * dx + dz * dz;
     }
 
-    private void renderCornerLabels(BlockPos corner, String label) {
+    private void renderCornerLabels(Render2DEvent event, BlockPos corner, String label) {
         Vector3d blockPosToVec3 = new Vector3d(corner.getX() + .5, corner.getY() + .5, corner.getZ() + .5);
         if (NametagUtils.to2D(blockPosToVec3, 1.5, true)) {
             NametagUtils.begin(blockPosToVec3);
-            TextRenderer.get().begin(1, false, true);
+            TextRenderer.get().begin(event.graphics, 1, false, true);
             TextRenderer.get().render(label, -TextRenderer.get().getWidth(label) / 2, 0, Color.WHITE, true);
             TextRenderer.get().end();
             NametagUtils.end();

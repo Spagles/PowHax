@@ -15,6 +15,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
@@ -163,22 +164,22 @@ public class TrajectoriesPlus extends Module {
     }
 
     private boolean projectileFilter(EntityType<?> type) {
-        return type == EntityType.SMALL_FIREBALL ||
-            type == EntityType.DRAGON_FIREBALL ||
-            // type == EntityType.FIREWORK_ROCKET || doesn't work
-            type == EntityType.LLAMA_SPIT ||
-            type == EntityType.ARROW ||
-            type == EntityType.SHULKER_BULLET ||
-            type == EntityType.EXPERIENCE_BOTTLE ||
-            type == EntityType.EGG ||
-            type == EntityType.ENDER_PEARL ||
-            type == EntityType.EYE_OF_ENDER ||
-            type == EntityType.SNOWBALL ||
-            type == EntityType.SPLASH_POTION ||
-            type == EntityType.TRIDENT ||
-            type == EntityType.WIND_CHARGE ||
-            type == EntityType.WITHER_SKULL ||
-            type == EntityType.SPECTRAL_ARROW;
+        return type == EntityTypes.SMALL_FIREBALL ||
+            type == EntityTypes.DRAGON_FIREBALL ||
+            // type == EntityTypes.FIREWORK_ROCKET || doesn't work
+            type == EntityTypes.LLAMA_SPIT ||
+            type == EntityTypes.ARROW ||
+            type == EntityTypes.SHULKER_BULLET ||
+            type == EntityTypes.EXPERIENCE_BOTTLE ||
+            type == EntityTypes.EGG ||
+            type == EntityTypes.ENDER_PEARL ||
+            type == EntityTypes.EYE_OF_ENDER ||
+            type == EntityTypes.SNOWBALL ||
+            type == EntityTypes.SPLASH_POTION ||
+            type == EntityTypes.TRIDENT ||
+            type == EntityTypes.WIND_CHARGE ||
+            type == EntityTypes.WITHER_SKULL ||
+            type == EntityTypes.SPECTRAL_ARROW;
 
     }
 

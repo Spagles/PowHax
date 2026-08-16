@@ -55,6 +55,7 @@ These older versions are no longer supported.
 
 | Version                                                       | Minecraft<br> version |
 |---------------------------------------------------------------|-----------------------|
+| [1.7.3](https://github.com/Powie69/PowHax/releases/tag/1.7.3) | `26.1`                |
 | [1.6.7](https://github.com/Powie69/PowHax/releases/tag/1.6.7) | `1.21.11`             |
 | [1.6.5](https://github.com/Powie69/PowHax/releases/tag/1.6.5) | `1.21.8`              |
 | [1.6.3](https://github.com/Powie69/PowHax/releases/tag/1.6.3) | `1.21.7`              |

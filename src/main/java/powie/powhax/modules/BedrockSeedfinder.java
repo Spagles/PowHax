@@ -69,7 +69,7 @@ public class BedrockSeedfinder extends Module {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private volatile BufferedWriter writer;
-    private int lines;
+    private volatile int lines;
     private File outputFile;
 
     /**
@@ -96,13 +96,16 @@ public class BedrockSeedfinder extends Module {
     private void onChunkData(ChunkDataEvent event) {
         // implementation note is only a suggestion right?
         executor.execute(() -> {
+            if (writer == null) return;
             ChunkAccess c = event.chunk();
+            int y = searchY.get().getValue();
+            BlockPos.MutableBlockPos sPos = new BlockPos.MutableBlockPos();
             for (int x = c.getPos().getMinBlockX(); x <= c.getPos().getMaxBlockX(); x++) {
                 for (int z = c.getPos().getMinBlockZ(); z <= c.getPos().getMaxBlockZ(); z++) {
-                    BlockPos sPos = new BlockPos(x, searchY.get().getValue(), z);
-                    if (!c.getBlockState(sPos).getBlock().equals(Blocks.BEDROCK)) continue;
+                    sPos.set(x, y, z);
+                    if (!c.getBlockState(sPos).is(Blocks.BEDROCK)) continue;
                     try {
-                        writer.write(sPos.getX() + " " + sPos.getY() + " " + sPos.getZ() + " Bedrock");
+                        writer.write(x + " " + y + " " + z + " Bedrock");
                         writer.newLine();
                         lines++;
                     } catch (IOException e) {
@@ -162,6 +165,7 @@ public class BedrockSeedfinder extends Module {
 
     @Override
     public String getInfoString() {
+        if (outputFile == null) return null;
         return outputFile.getName() + " | " + lines;
     }
 

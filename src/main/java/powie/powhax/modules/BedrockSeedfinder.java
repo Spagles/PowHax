@@ -69,7 +69,7 @@ public class BedrockSeedfinder extends Module {
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private volatile BufferedWriter writer;
-    private volatile int lines;
+    private int lines;
     private File outputFile;
 
     /**
@@ -96,7 +96,6 @@ public class BedrockSeedfinder extends Module {
     private void onChunkData(ChunkDataEvent event) {
         // implementation note is only a suggestion right?
         executor.execute(() -> {
-            if (writer == null) return;
             ChunkAccess c = event.chunk();
             int y = searchY.get().getValue();
             BlockPos.MutableBlockPos sPos = new BlockPos.MutableBlockPos();
